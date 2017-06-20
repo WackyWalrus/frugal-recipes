@@ -21,7 +21,7 @@ app.get('/', function (req, res) {
 	});
 });
 
-app.get('/recipe', function (req, res) {
+app.get('/upload', function (req, res) {
 	fs.readFile('src/public/static/upload.html', function (err, content) {
 		res.send(content.toString());
 	});

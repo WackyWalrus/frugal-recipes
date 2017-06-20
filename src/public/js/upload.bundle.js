@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 489);
+/******/ 	return __webpack_require__(__webpack_require__.s = 490);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -48700,7 +48700,8 @@ function extend() {
 /* (ignored) */
 
 /***/ }),
-/* 485 */
+/* 485 */,
+/* 486 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48730,9 +48731,9 @@ var _Body = __webpack_require__(220);
 
 var _Body2 = _interopRequireDefault(_Body);
 
-var _RecipeList = __webpack_require__(487);
+var _UploadForm = __webpack_require__(488);
 
-var _RecipeList2 = _interopRequireDefault(_RecipeList);
+var _UploadForm2 = _interopRequireDefault(_UploadForm);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -48768,7 +48769,7 @@ user.getInfo(function (info) {
 					_react2.default.createElement(
 						_Body2.default,
 						{ sidebar: true },
-						_react2.default.createElement(_RecipeList2.default, { search: true })
+						_react2.default.createElement(_UploadForm2.default, null)
 					)
 				);
 			}
@@ -48781,8 +48782,8 @@ user.getInfo(function (info) {
 });
 
 /***/ }),
-/* 486 */,
-/* 487 */
+/* 487 */,
+/* 488 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48796,12 +48797,6 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactDom = __webpack_require__(16);
 
-var _reactBootstrap = __webpack_require__(67);
-
-var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -48810,77 +48805,33 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Form = ReactBootstrap.Form,
-    FormGroup = ReactBootstrap.FormGroup,
-    FormControl = ReactBootstrap.FormControl,
-    Button = ReactBootstrap.Button,
-    Grid = ReactBootstrap.Grid,
-    Row = ReactBootstrap.Row,
-    Col = ReactBootstrap.Col;
+var UploadForm = function (_React$Component) {
+	_inherits(UploadForm, _React$Component);
 
-var RecipeList = function (_React$Component) {
-	_inherits(RecipeList, _React$Component);
+	function UploadForm() {
+		_classCallCheck(this, UploadForm);
 
-	function RecipeList() {
-		_classCallCheck(this, RecipeList);
-
-		return _possibleConstructorReturn(this, (RecipeList.__proto__ || Object.getPrototypeOf(RecipeList)).apply(this, arguments));
+		return _possibleConstructorReturn(this, (UploadForm.__proto__ || Object.getPrototypeOf(UploadForm)).apply(this, arguments));
 	}
 
-	_createClass(RecipeList, [{
+	_createClass(UploadForm, [{
 		key: 'render',
 		value: function render() {
-			var search = '';
-			if (this.props.search) {
-				search = _react2.default.createElement(
-					Form,
-					null,
-					_react2.default.createElement(
-						FormGroup,
-						null,
-						_react2.default.createElement(
-							Row,
-							null,
-							_react2.default.createElement(
-								Col,
-								{ sm: 10 },
-								_react2.default.createElement(FormControl, {
-									type: 'text',
-									placeholder: 'Search...'
-								})
-							),
-							_react2.default.createElement(
-								Col,
-								{ sm: 2 },
-								_react2.default.createElement(
-									Button,
-									{ bsClass: 'btn btn-default pull-right' },
-									'Run Search'
-								)
-							)
-						)
-					)
-				);
-			}
-			return _react2.default.createElement(
-				'div',
-				{ className: 'recipeList' },
-				search
-			);
+			return _react2.default.createElement('div', { className: 'form' });
 		}
 	}]);
 
-	return RecipeList;
+	return UploadForm;
 }(_react2.default.Component);
 
-module.exports = RecipeList;
+module.exports = UploadForm;
 
 /***/ }),
-/* 488 */,
-/* 489 */
+/* 489 */,
+/* 490 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(485);
+module.exports = __webpack_require__(486);
 
 
 /***/ })

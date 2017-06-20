@@ -1,10 +1,10 @@
 import React from 'react';
 import {render} from 'react-dom';
 
-class Wrapper extends React.Component {
+class UploadForm extends React.Component {
 	render() {
-		return <div className="wrapper">{this.props.children}</div>;
+		return <div className="form"></div>;
 	}
 }
 
-module.exports = Wrapper;
+module.exports = UploadForm;
