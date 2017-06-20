@@ -29,7 +29,7 @@ app.get('/upload', function (req, res) {
 });
 
 app.post('/save', function (req, res) {
-	res.send('test');
+	console.log(req.body);
 });
 
 app.get('/me', function (req, res) {
