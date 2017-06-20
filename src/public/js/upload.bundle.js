@@ -48768,7 +48768,7 @@ user.getInfo(function (info) {
 					_react2.default.createElement(_Navigation2.default, null),
 					_react2.default.createElement(
 						_Body2.default,
-						{ sidebar: true },
+						null,
 						_react2.default.createElement(_UploadForm2.default, null)
 					)
 				);
@@ -48797,6 +48797,12 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactDom = __webpack_require__(16);
 
+var _reactBootstrap = __webpack_require__(67);
+
+var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -48805,19 +48811,174 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var UploadForm = function (_React$Component) {
-	_inherits(UploadForm, _React$Component);
+var FormGroup = ReactBootstrap.FormGroup,
+    ControlLabel = ReactBootstrap.ControlLabel,
+    FormControl = ReactBootstrap.FormControl,
+    InputGroup = ReactBootstrap.InputGroup,
+    Button = ReactBootstrap.Button;
 
-	function UploadForm() {
+var InteractiveList = function (_React$Component) {
+	_inherits(InteractiveList, _React$Component);
+
+	function InteractiveList(props) {
+		_classCallCheck(this, InteractiveList);
+
+		var _this = _possibleConstructorReturn(this, (InteractiveList.__proto__ || Object.getPrototypeOf(InteractiveList)).call(this, props));
+
+		_this.handleItemChange = _this.handleItemChange.bind(_this);
+		_this.state = props;
+		return _this;
+	}
+
+	_createClass(InteractiveList, [{
+		key: 'handleItemChange',
+		value: function handleItemChange(e) {
+			var index = e.target.getAttribute('data-index'),
+			    items = this.state.items,
+			    i;
+			if (items[index] === undefined) {
+				items[index] = {};
+			}
+			items[index].value = e.target.value;
+
+			items = items.filter(function (item, index) {
+				if (items.length === 1) {
+					return item;
+				}
+				if (item.value.length !== 0) {
+					return item;
+				}
+			});
+
+			items.push({
+				'value': ''
+			});
+
+			this.setState({
+				'items': items
+			});
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var _this2 = this;
+
+			var x = 0;
+			return _react2.default.createElement(
+				FormGroup,
+				null,
+				_react2.default.createElement(
+					ControlLabel,
+					null,
+					this.props.name
+				),
+				this.state.items.map(function (item, index) {
+					return _react2.default.createElement(
+						InputGroup,
+						{ key: index },
+						_react2.default.createElement(
+							InputGroup.Addon,
+							null,
+							index + 1
+						),
+						_react2.default.createElement(FormControl, {
+							type: 'text',
+							value: item.value,
+							'data-index': index,
+							onChange: _this2.handleItemChange })
+					);
+				})
+			);
+		}
+	}]);
+
+	return InteractiveList;
+}(_react2.default.Component);
+
+var UploadForm = function (_React$Component2) {
+	_inherits(UploadForm, _React$Component2);
+
+	function UploadForm(props) {
 		_classCallCheck(this, UploadForm);
 
-		return _possibleConstructorReturn(this, (UploadForm.__proto__ || Object.getPrototypeOf(UploadForm)).apply(this, arguments));
+		var _this3 = _possibleConstructorReturn(this, (UploadForm.__proto__ || Object.getPrototypeOf(UploadForm)).call(this, props));
+
+		_this3.state = {
+			ingredients: [{
+				'value': ''
+			}],
+			directions: [{
+				'value': ''
+			}]
+		};
+		return _this3;
 	}
 
 	_createClass(UploadForm, [{
 		key: 'render',
 		value: function render() {
-			return _react2.default.createElement('div', { className: 'form' });
+			return _react2.default.createElement(
+				'form',
+				null,
+				_react2.default.createElement(
+					FormGroup,
+					null,
+					_react2.default.createElement(
+						ControlLabel,
+						null,
+						'Recipe Name'
+					),
+					_react2.default.createElement(FormControl, {
+						type: 'text',
+						placeholder: 'Recipe Name' })
+				),
+				_react2.default.createElement(
+					FormGroup,
+					null,
+					_react2.default.createElement(
+						ControlLabel,
+						null,
+						'Time (minutes)'
+					),
+					_react2.default.createElement(FormControl, {
+						type: 'text',
+						placeholder: 'Time (minutes)' })
+				),
+				_react2.default.createElement(
+					FormGroup,
+					null,
+					_react2.default.createElement(
+						ControlLabel,
+						null,
+						'Servings'
+					),
+					_react2.default.createElement(FormControl, {
+						type: 'text',
+						placeholder: 'Servings' })
+				),
+				_react2.default.createElement(InteractiveList, { items: this.state.ingredients, name: 'Ingredients' }),
+				_react2.default.createElement(InteractiveList, { items: this.state.directions, name: 'Directions' }),
+				_react2.default.createElement(
+					FormGroup,
+					null,
+					_react2.default.createElement(
+						ControlLabel,
+						null,
+						'Picture'
+					),
+					_react2.default.createElement(
+						InputGroup,
+						null,
+						_react2.default.createElement(FormControl, {
+							type: 'file' })
+					)
+				),
+				_react2.default.createElement(
+					Button,
+					null,
+					'Upload'
+				)
+			);
 		}
 	}]);
 

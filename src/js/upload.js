@@ -17,7 +17,7 @@ user.getInfo(function (info) {
 		render() {
 			return <Wrapper>
 				<Navigation />
-				<Body sidebar>
+				<Body>
 					<UploadForm />
 				</Body>
 			</Wrapper>
