@@ -4,6 +4,8 @@ import React from 'react';
 import {render} from 'react-dom';
 import * as ReactBootstrap from 'react-bootstrap';
 
+var axios = require('axios');
+
 const FormGroup = ReactBootstrap.FormGroup,
 	ControlLabel = ReactBootstrap.ControlLabel,
 	FormControl = ReactBootstrap.FormControl,
@@ -13,13 +15,58 @@ const FormGroup = ReactBootstrap.FormGroup,
 class InteractiveList extends React.Component {
 	constructor(props) {
 		super(props);
-		this.handleItemChange = this.handleItemChange.bind(this);
-		this.state = props;
 	}
 
-	handleItemChange(e) {
+	render() {
+		var x = 0;
+		return (
+			<FormGroup>
+				<ControlLabel>{this.props.name}</ControlLabel>
+				{this.props.items.map((item, index) => (
+					<InputGroup key={index}>
+						<InputGroup.Addon>{index + 1}</InputGroup.Addon>
+						<FormControl
+							type="text"
+							value={item.value}
+							data-index={index}
+							data-key={this.props.k}
+							onChange={this.props.handler} />
+					</InputGroup>	
+				))}
+			</FormGroup>
+		);
+	}
+}
+
+class UploadForm extends React.Component {
+	constructor(props) {
+		super(props);
+		this.buttonClickHandler = this.buttonClickHandler.bind(this);
+		this.interactiveListHandler = this.interactiveListHandler.bind(this);
+		this.textChangeHandler = this.textChangeHandler.bind(this);
+		this.state = {
+			recipe: '',
+			time: '',
+			servings: '',
+			ingredients: [{
+				'value': ''
+			}],
+			directions: [{
+				'value': ''
+			}]
+		}
+	}
+
+	textChangeHandler(e) {
+		this.setState({
+			[e.target.getAttribute('k')]: e.target.value
+		});
+	}
+
+	interactiveListHandler(e) {
 		var index = e.target.getAttribute('data-index'),
-			items = this.state.items,
+			key = e.target.getAttribute('data-key'),
+			items = this.state[key],
 			i;
 		if (items[index] === undefined) {
 			items[index] = {};
@@ -40,41 +87,17 @@ class InteractiveList extends React.Component {
 		});
 
 		this.setState({
-			'items': items
+			[key]: items
 		});
 	}
 
-	render() {
-		var x = 0;
-		return (
-			<FormGroup>
-				<ControlLabel>{this.props.name}</ControlLabel>
-				{this.state.items.map((item, index) => (
-					<InputGroup key={index}>
-						<InputGroup.Addon>{index + 1}</InputGroup.Addon>
-						<FormControl
-							type="text"
-							value={item.value}
-							data-index={index}
-							onChange={this.handleItemChange} />
-					</InputGroup>	
-				))}
-			</FormGroup>
-		);
-	}
-}
+	buttonClickHandler() {
+		var data = this.state;
+		data.username = window.user.name;
 
-class UploadForm extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			ingredients: [{
-				'value': ''
-			}],
-			directions: [{
-				'value': ''
-			}]
-		}
+		axios.post('/save', this.state).then(function (response) {
+			console.log(response);
+		});
 	}
 
 	render() {
@@ -83,22 +106,31 @@ class UploadForm extends React.Component {
 				<ControlLabel>Recipe Name</ControlLabel>
 				<FormControl
 					type="text"
-					placeholder="Recipe Name" />
+					placeholder="Recipe Name"
+					value={this.state.recipe}
+					k='recipe'
+					onChange={this.textChangeHandler} />
 			</FormGroup>
 			<FormGroup>
 				<ControlLabel>Time (minutes)</ControlLabel>
 				<FormControl
 					type="text"
-					placeholder="Time (minutes)" />
+					placeholder="Time (minutes)"
+					value={this.state.time}
+					k='time'
+					onChange={this.textChangeHandler} />
 			</FormGroup>
 			<FormGroup>
 				<ControlLabel>Servings</ControlLabel>
 				<FormControl
 					type="text"
-					placeholder="Servings" />
+					placeholder="Servings"
+					value={this.state.servings}
+					k='servings'
+					onChange={this.textChangeHandler} />
 			</FormGroup>
-			<InteractiveList items={this.state.ingredients} name="Ingredients" />
-			<InteractiveList items={this.state.directions} name="Directions" />
+			<InteractiveList items={this.state.ingredients} name="Ingredients" k="ingredients" handler={this.interactiveListHandler} />
+			<InteractiveList items={this.state.directions} name="Directions" k="directions" handler={this.interactiveListHandler} />
 			<FormGroup>
 				<ControlLabel>Picture</ControlLabel>
 				<InputGroup>
@@ -106,7 +138,7 @@ class UploadForm extends React.Component {
 						type="file" />
 				</InputGroup>
 			</FormGroup>
-			<Button>Upload</Button>
+			<Button onClick={this.buttonClickHandler}>Upload</Button>
 		</form>;
 	}
 }

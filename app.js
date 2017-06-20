@@ -6,6 +6,7 @@ const querystring = require('querystring');
 const request = require('request');
 const base64 = require('base-64');
 const session = require('client-sessions');
+const mysql = require('mysql');
 
 app.use(session({
   cookieName: 'session',
@@ -25,6 +26,10 @@ app.get('/upload', function (req, res) {
 	fs.readFile('src/public/static/upload.html', function (err, content) {
 		res.send(content.toString());
 	});
+});
+
+app.post('/save', function (req, res) {
+	res.send('test');
 });
 
 app.get('/me', function (req, res) {
