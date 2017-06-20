@@ -7,6 +7,10 @@ const request = require('request');
 const base64 = require('base-64');
 const session = require('client-sessions');
 const mysql = require('mysql');
+const bodyParser = require('body-parser');
+
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 app.use(session({
   cookieName: 'session',
@@ -29,7 +33,99 @@ app.get('/upload', function (req, res) {
 });
 
 app.post('/save', function (req, res) {
-	console.log(req.body);
+//	console.log(req.body);
+	var data = req.body;
+	if (data.username === undefined ||
+			data.username.length === 0) {
+		res.send({
+			'error': {
+				'message': 'You need to log in',
+				'element': 'container'
+			}
+		});
+		return false;
+	}
+	if (req.session.info === undefined) {
+		res.send({
+			'error': {
+				'message': 'You need to log in',
+				'element': 'container'
+			}
+		});
+		return false;
+	}
+	if (req.session.info.name !== data.username) {
+		res.send({
+			'error': {
+				'message': 'Don\'t play with me, boy',
+				'element': 'container'
+			}
+		});
+		return false;
+	}
+	if (data.recipe.length === 0) {
+		res.send({
+			'error': {
+				'message': 'You need a recipe title',
+				'element': 'recipe'
+			}
+		});
+		return false;
+	}
+	if (data.time.length === 0) {
+		res.send({
+			'error': {
+				'message': 'You need to set how long this recipe takes to make',
+				'element': 'time'
+			}
+		});
+		return false;
+	}
+	if (data.servings.length === 0) {
+		res.send({
+			'error': {
+				'message': 'You need to set how many servings this recipe makes',
+				'element': 'servings'
+			}
+		});
+		return false;
+	}
+	if (data.ingredients.length === 0) {
+		res.send({
+			'error': {
+				'message': 'You need to set ingredients',
+				'element': 'ingredients'
+			}
+		});
+		return false;
+	}
+	if (data.ingredients[0].value === '') {
+		res.send({
+			'error': {
+				'message': 'You need to set ingredients',
+				'element': 'ingredients'
+			}
+		});
+		return false;
+	}
+	if (data.directions.length === 0) {
+		res.send({
+			'error': {
+				'message': 'You need to set directions',
+				'element': 'directions'
+			}
+		});
+		return false;
+	}
+	if (data.directions[0].value === '') {
+		res.send({
+			'error': {
+				'message': 'You need to set directions',
+				'element': 'directions'
+			}
+		});
+		return false;
+	}
 });
 
 app.get('/me', function (req, res) {
