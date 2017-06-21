@@ -50460,7 +50460,7 @@ var UploadForm = function (_React$Component2) {
 			data.username = window.user.name;
 
 			axios.post('/save', data).then(function (response) {
-				response = JSON.parse(response);
+				response = JSON.parse(response.data);
 
 				if (response.data.error !== undefined) {
 					console.log(response.data.error);
