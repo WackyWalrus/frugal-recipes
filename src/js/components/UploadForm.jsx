@@ -98,7 +98,11 @@ class UploadForm extends React.Component {
 		data.username = window.user.name;
 
 		axios.post('/save', data).then(function (response) {
-			console.log(response);
+			if (response.data.error !== undefined) {
+				console.log(response.data.error);
+				return false;
+			}
+			window.location.href = '/recipe/' + repsonse.data.success;
 		});
 	}
 
