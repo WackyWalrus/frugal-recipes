@@ -50460,14 +50460,13 @@ var UploadForm = function (_React$Component2) {
 			data.username = window.user.name;
 
 			axios.post('/save', data).then(function (response) {
-				console.log(response.data);
-
-				var d = JSON.parse(response.data);
+				var d = response.data;
 
 				if (d.error !== undefined) {
 					console.log(d.error);
 					return false;
 				}
+
 				window.location.href = '/recipe/' + d.success;
 			});
 		}
