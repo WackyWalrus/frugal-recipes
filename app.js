@@ -10,7 +10,7 @@ const base64 = require('base-64');
 const session = require('client-sessions');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
-const blobUtil = require('blob-util');
+const dtob = require('dataurl-to-blob');
 
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
@@ -167,10 +167,12 @@ app.post('/save', function (req, res) {
 					match[1] === 'jpg' ||
 					match[1] === 'png' ||
 					match[1] === 'gif') {
-				blobUtil.base64StringToBlob(data.img).then(function (blob) {
-					fs.writeFile('src/public/images/' + id + '.' + match[1], blob, function (err) {
-						console.log(err);
-					});
+				var blob = dtob(data.img);
+				fs.writeFile('src/public/images/' + id + '.' + match[1], blob, function (err) {
+					if (err) {
+						throw err;
+					}
+					console.log('file uploaded');
 				});
 			}
 		}
