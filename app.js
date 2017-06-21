@@ -35,9 +35,8 @@ app.get('/upload', function (req, res) {
 });
 
 app.post('/save', function (req, res) {
-//	console.log(req.body);
 	var data = req.body;
-	/*if (data.username === undefined ||
+	if (data.username === undefined ||
 			data.username.length === 0) {
 		res.send({
 			'error': {
@@ -64,7 +63,7 @@ app.post('/save', function (req, res) {
 			}
 		});
 		return false;
-	}*/
+	}
 	if (data.recipe.length === 0) {
 		res.send({
 			'error': {
