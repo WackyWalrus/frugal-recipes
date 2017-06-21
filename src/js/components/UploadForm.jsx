@@ -10,7 +10,8 @@ const FormGroup = ReactBootstrap.FormGroup,
 	ControlLabel = ReactBootstrap.ControlLabel,
 	FormControl = ReactBootstrap.FormControl,
 	InputGroup = ReactBootstrap.InputGroup,
-	Button = ReactBootstrap.Button;
+	Button = ReactBootstrap.Button,
+	Checkbox = ReactBootstrap.Checkbox;
 
 class InteractiveList extends React.Component {
 	constructor(props) {
@@ -49,14 +50,30 @@ class UploadForm extends React.Component {
 			recipe: '',
 			time: '',
 			servings: '',
+			selectedCategories: '',
 			ingredients: [{
 				'value': ''
 			}],
 			directions: [{
 				'value': ''
 			}],
-			img: ''
+			img: '',
+			categories: []
 		}
+	}
+
+	componentDidMount() {
+		var _ = this;
+		axios.get('/categories').then(function (response) {
+			var data = response.data;
+			var list = [];
+			for (var i = 0; i < data.length; i += 1) {
+				list.push(<Checkbox key={data[i].id}>{data[i].title}</Checkbox>);
+			}
+			_.setState({
+				categories: list
+			})
+		});
 	}
 
 	textChangeHandler(e) {
@@ -96,6 +113,7 @@ class UploadForm extends React.Component {
 	buttonClickHandler() {
 		var data = this.state;
 		data.username = window.user.name;
+		delete data.categories;
 
 		axios.post('/save', data).then(function (response) {
 			var d = response.data;
@@ -155,6 +173,7 @@ class UploadForm extends React.Component {
 					k='servings'
 					onChange={this.textChangeHandler} />
 			</FormGroup>
+			{this.state.categories}
 			<InteractiveList items={this.state.ingredients} name="Ingredients" k="ingredients" handler={this.interactiveListHandler} />
 			<InteractiveList items={this.state.directions} name="Directions" k="directions" handler={this.interactiveListHandler} />
 			<FormGroup>

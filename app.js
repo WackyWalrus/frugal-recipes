@@ -10,6 +10,7 @@ const base64 = require('base-64');
 const session = require('client-sessions');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
+const glob = require('glob');
 
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
@@ -40,9 +41,135 @@ app.get('/upload', function (req, res) {
 	});
 });
 
+/**
+ * Send recipe categories
+ */
+app.get('/categories', function (req, res) {
+	/**
+	 * Setup mysql connection
+	 */
+	var connection = mysql.createConnection({
+		host: 'localhost',
+		user: 'frugal_user',
+		password: mysqlpass,
+		database: 'frugal'
+	});
+
+	connection.connect();
+
+	connection.query("SELECT * FROM categories ORDER BY title ASC", function (error, results, rows) {
+		res.send(results);
+		connection.end();
+	});
+});
+
 app.get('/recipe/:recipeId', function (req, res) {
 	fs.readFile('src/public/static/recipe.html', function (err, content) {
-		res.send(content.toString());
+		var html = content.toString();
+
+		var recipeId = parseInt(req.params.recipeId, 10);
+
+		var data = {};
+
+		/**
+		 * Setup mysql connection
+		 */
+		var connection = mysql.createConnection({
+			host: 'localhost',
+			user: 'frugal_user',
+			password: mysqlpass,
+			database: 'frugal'
+		});
+
+		connection.connect();
+
+		/**
+		 * Get main recipe sql
+		 */
+		connection.query("SELECT * FROM recipes WHERE id = ? LIMIT 1", [recipeId], function (error, results, rows) {
+			if (error) {
+				throw error;
+			}
+
+			if (results.length === 0) {
+				return false;
+			}
+
+			/**
+			 * Setup data
+			 */
+			data.id = results[0].id;
+			data.user = results[0].user;
+			data.title = results[0].title;
+			data.time = results[0].time;
+			data.servings = results[0].servings;
+			data.datestamp = results[0].datestamp;
+			data.ingredients = [];
+			data.directions = [];
+
+			/**
+			 * Get ingredients
+			 */
+			connection.query("SELECT * FROM ingredients WHERE recipe_id = ? ORDER BY ord ASC", [recipeId], function (error, results, rows) {
+				/**
+				 * Append ingredient data
+				 */
+				for (var i = 0; i < results.length; i += 1) {
+					data.ingredients.push({
+						'id': results[i].id,
+						'ord': results[i].ord,
+						'content': results[i].content
+					});
+				}
+				/**
+				 * Get directions
+				 */
+				connection.query("SELECT * FROM directions WHERE recipe_id = ? ORDER BY ord ASC", [recipeId], function (error, results, rows) {
+					/**
+					 * Append direction data
+					 */
+					for (var i = 0; i < results.length; i += 1) {
+						data.directions.push({
+							'id': results[i].id,
+							'ord': results[i].ord,
+							'content': results[i].content
+						});
+					}
+					
+					/**
+					 * Find image file
+					 */
+					glob('src/public/images/' + data.id + '.*', function (er, files) {
+						/**
+						 * Append image file if there is one
+						 */
+						if (files[0] !== undefined) {
+							data.imagesrc = files[0].replace('src/public', '');
+						}
+
+						/**
+						 * Append data to html file
+						 */
+						var fixHTML = new Promise(function (resolve, reject) {
+							if (html = html.replace('{pagedata}', JSON.stringify(data))) {
+								resolve(html);
+							}
+						});
+
+						fixHTML.then(function (result) {
+							/**
+							 * Serve html
+							 */
+							res.send(result);
+							connection.end();
+						});
+					});
+				});
+			});
+
+
+		});
+
 	});
 });
 
@@ -274,6 +401,7 @@ app.get('/get-token/', function (req, res) {
 app.use('/js', express.static(path.resolve(__dirname, 'src/public/js')));
 app.use('/css', express.static(path.resolve(__dirname, 'src/public/css')));
 app.use('/fonts', express.static(path.resolve(__dirname, 'src/public/fonts')));
+app.use('/images', express.static(path.resolve(__dirname, 'src/public/images')));
 
 if (process.argv[2] !== undefined) {
 	var port = process.argv[2];

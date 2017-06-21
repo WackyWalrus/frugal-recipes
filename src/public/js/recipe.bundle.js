@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 535);
+/******/ 	return __webpack_require__(__webpack_require__.s = 536);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -50268,7 +50268,8 @@ function isSlowBuffer (obj) {
 /* 518 */,
 /* 519 */,
 /* 520 */,
-/* 521 */
+/* 521 */,
+/* 522 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50298,9 +50299,9 @@ var _Body = __webpack_require__(227);
 
 var _Body2 = _interopRequireDefault(_Body);
 
-var _RecipeList = __webpack_require__(525);
+var _Recipe = __webpack_require__(524);
 
-var _RecipeList2 = _interopRequireDefault(_RecipeList);
+var _Recipe2 = _interopRequireDefault(_Recipe);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -50316,6 +50317,7 @@ var User = __webpack_require__(231),
 user.getInfo(function (info) {
 
 	window.user = info;
+	var recipeId = parseInt(window.location.pathname.replace('/recipe/', ''), 10);
 
 	var Index = function (_React$Component) {
 		_inherits(Index, _React$Component);
@@ -50335,8 +50337,8 @@ user.getInfo(function (info) {
 					_react2.default.createElement(_Navigation2.default, null),
 					_react2.default.createElement(
 						_Body2.default,
-						{ sidebar: true },
-						_react2.default.createElement(_RecipeList2.default, { search: true })
+						null,
+						_react2.default.createElement(_Recipe2.default, { recipeId: recipeId, full: true })
 					)
 				);
 			}
@@ -50349,10 +50351,8 @@ user.getInfo(function (info) {
 });
 
 /***/ }),
-/* 522 */,
 /* 523 */,
-/* 524 */,
-/* 525 */
+/* 524 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50380,72 +50380,129 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Form = ReactBootstrap.Form,
-    FormGroup = ReactBootstrap.FormGroup,
-    FormControl = ReactBootstrap.FormControl,
-    Button = ReactBootstrap.Button,
-    Grid = ReactBootstrap.Grid,
+var Grid = ReactBootstrap.Grid,
     Row = ReactBootstrap.Row,
-    Col = ReactBootstrap.Col;
+    Col = ReactBootstrap.Col,
+    Image = ReactBootstrap.Image,
+    ListGroup = ReactBootstrap.ListGroup,
+    ListGroupItem = ReactBootstrap.ListGroupItem,
+    Panel = ReactBootstrap.Panel,
+    Badge = ReactBootstrap.Badge;
 
-var RecipeList = function (_React$Component) {
-	_inherits(RecipeList, _React$Component);
+var axios = __webpack_require__(493);
 
-	function RecipeList() {
-		_classCallCheck(this, RecipeList);
+var Recipe = function (_React$Component) {
+	_inherits(Recipe, _React$Component);
 
-		return _possibleConstructorReturn(this, (RecipeList.__proto__ || Object.getPrototypeOf(RecipeList)).apply(this, arguments));
+	function Recipe(props) {
+		_classCallCheck(this, Recipe);
+
+		var _this = _possibleConstructorReturn(this, (Recipe.__proto__ || Object.getPrototypeOf(Recipe)).call(this, props));
+
+		if (_this.props.full === true) {
+			var data = JSON.parse(document.querySelector('[name="page-data"]').value);
+			_this.state = data;
+		}
+		return _this;
 	}
 
-	_createClass(RecipeList, [{
+	_createClass(Recipe, [{
 		key: 'render',
 		value: function render() {
-			var search = '';
-			if (this.props.search) {
-				search = _react2.default.createElement(
-					Form,
-					null,
+			if (this.props.full === true) {
+				console.log(this.state);
+
+				var image = '';
+
+				if (this.state.imagesrc !== undefined) {
+					image = _react2.default.createElement(Image, { src: this.state.imagesrc, rounded: true, responsive: true });
+				}
+
+				var ingredients = [];
+				for (var i = 0; i < this.state.ingredients.length; i += 1) {
+					ingredients.push(_react2.default.createElement(
+						ListGroupItem,
+						null,
+						this.state.ingredients[i].content
+					));
+				}
+
+				var directions = [];
+				for (var i = 0; i < this.state.directions.length; i += 1) {
+					directions.push(_react2.default.createElement(
+						ListGroupItem,
+						null,
+						this.state.directions[i].content
+					));
+				}
+
+				var userUrl = "http://reddit.com/u/" + this.state.user;
+
+				return _react2.default.createElement(
+					Grid,
+					{ fluid: true },
 					_react2.default.createElement(
-						FormGroup,
+						Row,
 						null,
 						_react2.default.createElement(
-							Row,
-							null,
+							Col,
+							{ sm: 3 },
+							image,
 							_react2.default.createElement(
-								Col,
-								{ sm: 10 },
-								_react2.default.createElement(FormControl, {
-									type: 'text',
-									placeholder: 'Search...'
-								})
+								'h3',
+								null,
+								this.state.title
 							),
 							_react2.default.createElement(
-								Col,
-								{ sm: 2 },
+								'h4',
+								null,
+								'By ',
 								_react2.default.createElement(
-									Button,
-									{ bsClass: 'btn btn-default pull-right' },
-									'Run Search'
+									'a',
+									{ href: userUrl },
+									this.state.user
 								)
+							),
+							_react2.default.createElement(
+								'p',
+								null,
+								this.state.time,
+								' minutes'
+							),
+							_react2.default.createElement(
+								'p',
+								null,
+								this.state.servings,
+								' servings'
+							)
+						),
+						_react2.default.createElement(
+							Col,
+							{ sm: 9 },
+							_react2.default.createElement(
+								Panel,
+								{ header: 'Ingredients' },
+								ingredients
+							),
+							_react2.default.createElement(
+								Panel,
+								{ header: 'Directions' },
+								directions
 							)
 						)
 					)
 				);
 			}
-			return _react2.default.createElement(
-				'div',
-				{ className: 'recipeList' },
-				search
-			);
 		}
 	}]);
 
-	return RecipeList;
+	return Recipe;
 }(_react2.default.Component);
 
-module.exports = RecipeList;
+module.exports = Recipe;
 
 /***/ }),
+/* 525 */,
 /* 526 */,
 /* 527 */,
 /* 528 */,
@@ -50455,10 +50512,11 @@ module.exports = RecipeList;
 /* 532 */,
 /* 533 */,
 /* 534 */,
-/* 535 */
+/* 535 */,
+/* 536 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(521);
+module.exports = __webpack_require__(522);
 
 
 /***/ })
