@@ -102,7 +102,7 @@ class UploadForm extends React.Component {
 				console.log(response.data.error);
 				return false;
 			}
-			window.location.href = '/recipe/' + repsonse.data.success;
+			window.location.href = '/recipe/' + reponse.data.success;
 		});
 	}
 
