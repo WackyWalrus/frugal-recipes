@@ -129,10 +129,6 @@ app.post('/save', function (req, res) {
 		return false;
 	}
 
-	console.log(typeof data.directions);
-
-	return false;
-
 	var connection = mysql.createConnection({
 		host: 'localhost',
 		user: 'frugal_user',
@@ -142,11 +138,23 @@ app.post('/save', function (req, res) {
 
 	connection.connect();
 
-	connection.query('INSERT INTO recipes (title, time, servings, datestamp) VALUES (?, ?, ?, UNIX_TIMESTAMP())', function (error, results, rows) {
+	connection.query('INSERT INTO recipes (user, title, time, servings, datestamp) VALUES (? ?, ?, ?, UNIX_TIMESTAMP())', [req.session.info.name, data.recipe, data.time, data.servings], function (error, results, rows) {
 		if (error) {
 			throw error;
 		}
-		var id = results.insertId;
+		var id = results.insertId,
+			a,
+			b;
+		for (a = 0; a < data.ingredients.length; a += 1) {
+			connection.query("INSERT INTO ingredients (ord, recipe_id, content, datestamp) VALUES (?, ?, ?, UNIX_TIMESTAMP())", [a, id, data.ingredients[a].value]);
+		}
+		for (b = 0; b < data.directions.length; b += 1) {
+			connection.query("INSERT INTO directions (ord, recipe_id, content, datestamp) VALUES (?, ?, ?, UNIX_TIMESTAMP())", [b, id, data.directions[b].value]);
+		}
+
+		res.send({
+			'success': id
+		});
 	});
 
 });

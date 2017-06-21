@@ -1,8 +1,8 @@
--- MySQL dump 10.15  Distrib 10.0.25-MariaDB, for debian-linux-gnu (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.18, for Linux (x86_64)
 --
 -- Host: localhost    Database: frugal
 -- ------------------------------------------------------
--- Server version	10.0.25-MariaDB-0ubuntu0.15.10.1
+-- Server version	5.7.18-0ubuntu0.16.04.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -16,6 +16,58 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `directions`
+--
+
+DROP TABLE IF EXISTS `directions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `directions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ord` int(11) NOT NULL,
+  `recipe_id` int(11) NOT NULL,
+  `content` text,
+  `datestamp` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `directions`
+--
+
+LOCK TABLES `directions` WRITE;
+/*!40000 ALTER TABLE `directions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `directions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ingredients`
+--
+
+DROP TABLE IF EXISTS `ingredients`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ingredients` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ord` int(11) NOT NULL,
+  `recipe_id` int(11) NOT NULL,
+  `content` text,
+  `datestamp` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ingredients`
+--
+
+LOCK TABLES `ingredients` WRITE;
+/*!40000 ALTER TABLE `ingredients` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ingredients` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `recipes`
 --
 
@@ -24,11 +76,10 @@ DROP TABLE IF EXISTS `recipes`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `recipes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user` varchar(36) DEFAULT NULL,
   `title` text,
   `time` text,
   `servings` text,
-  `ingredients` text,
-  `directions` text,
   `datestamp` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -52,4 +103,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-06-20 15:30:29
+-- Dump completed on 2017-06-20 21:23:45
