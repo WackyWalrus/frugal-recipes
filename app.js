@@ -10,6 +10,7 @@ const base64 = require('base-64');
 const session = require('client-sessions');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
+const blobUtil = require('blob-util');
 
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
@@ -37,7 +38,7 @@ app.get('/upload', function (req, res) {
 app.post('/save', function (req, res) {
 //	console.log(req.body);
 	var data = req.body;
-	if (data.username === undefined ||
+	/*if (data.username === undefined ||
 			data.username.length === 0) {
 		res.send({
 			'error': {
@@ -64,7 +65,7 @@ app.post('/save', function (req, res) {
 			}
 		});
 		return false;
-	}
+	}*/
 	if (data.recipe.length === 0) {
 		res.send({
 			'error': {
@@ -129,16 +130,23 @@ app.post('/save', function (req, res) {
 		return false;
 	}
 
+	if (data.ingredients[data.ingredients.length - 1].value.length === 0) {
+		data.ingredients.splice(data.ingredients.length - 1, 1);
+	}
+	if (data.directions[data.directions.length - 1].value.length === 0) {
+		data.directions.splice(data.directions.length - 1, 1);
+	}
+
 	var connection = mysql.createConnection({
 		host: 'localhost',
 		user: 'frugal_user',
-		pass: mysqlpass,
+		password: mysqlpass,
 		database: 'frugal'
 	});
 
 	connection.connect();
 
-	connection.query('INSERT INTO recipes (user, title, time, servings, datestamp) VALUES (? ?, ?, ?, UNIX_TIMESTAMP())', [req.session.info.name, data.recipe, data.time, data.servings], function (error, results, rows) {
+	connection.query('INSERT INTO recipes (user, title, time, servings, datestamp) VALUES (?, ?, ?, ?, UNIX_TIMESTAMP())', [req.session.info.name, data.recipe, data.time, data.servings], function (error, results, rows) {
 		if (error) {
 			throw error;
 		}
@@ -150,6 +158,21 @@ app.post('/save', function (req, res) {
 		}
 		for (b = 0; b < data.directions.length; b += 1) {
 			connection.query("INSERT INTO directions (ord, recipe_id, content, datestamp) VALUES (?, ?, ?, UNIX_TIMESTAMP())", [b, id, data.directions[b].value]);
+		}
+
+		if (data.img !== undefined &&
+				data.img.length !== 0) {
+			var match = data.img.match(/data\:image\/(\w*)/i);
+			if (match[1] === 'jpeg' ||
+					match[1] === 'jpg' ||
+					match[1] === 'png' ||
+					match[1] === 'gif') {
+				blobUtil.base64StringToBlob(data.img).then(function (blob) {
+					fs.writeFile('src/public/images/' + id + '.' + match[1], blob, function (err) {
+						console.log(err);
+					});
+				});
+			}
 		}
 
 		res.send({

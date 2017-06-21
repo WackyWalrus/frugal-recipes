@@ -44,6 +44,7 @@ class UploadForm extends React.Component {
 		this.buttonClickHandler = this.buttonClickHandler.bind(this);
 		this.interactiveListHandler = this.interactiveListHandler.bind(this);
 		this.textChangeHandler = this.textChangeHandler.bind(this);
+		this.fileHandler = this.fileHandler.bind(this);
 		this.state = {
 			recipe: '',
 			time: '',
@@ -53,7 +54,8 @@ class UploadForm extends React.Component {
 			}],
 			directions: [{
 				'value': ''
-			}]
+			}],
+			img: ''
 		}
 	}
 
@@ -95,9 +97,26 @@ class UploadForm extends React.Component {
 		var data = this.state;
 		data.username = window.user.name;
 
-		axios.post('/save', this.state).then(function (response) {
+		axios.post('/save', data).then(function (response) {
 			console.log(response);
 		});
+	}
+
+	fileHandler(e) {
+		var file = e.target.files[0];
+		var _ = this;
+		if (file === undefined) {
+			return false;
+		}
+
+		var reader = new FileReader();
+		reader.onloadend = function() {
+			_.setState({
+				img: reader.result
+			});
+			console.log(_.state);
+		}
+		reader.readAsDataURL(file);
 	}
 
 	render() {
@@ -135,7 +154,8 @@ class UploadForm extends React.Component {
 				<ControlLabel>Picture</ControlLabel>
 				<InputGroup>
 					<FormControl
-						type="file" />
+						type="file"
+						onChange={this.fileHandler} />
 				</InputGroup>
 			</FormGroup>
 			<Button onClick={this.buttonClickHandler}>Upload</Button>
