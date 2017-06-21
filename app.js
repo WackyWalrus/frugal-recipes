@@ -1,3 +1,5 @@
+var mysqlpass = (process.argv[3] === undefined) ? false : process.argv[3];
+
 const express = require('express');
 const app = express();
 const fs = require('fs');
@@ -126,6 +128,27 @@ app.post('/save', function (req, res) {
 		});
 		return false;
 	}
+
+	console.log(typeof data.directions);
+
+	return false;
+
+	var connection = mysql.createConnection({
+		host: 'localhost',
+		user: 'frugal_user',
+		pass: mysqlpass,
+		database: 'frugal'
+	});
+
+	connection.connect();
+
+	connection.query('INSERT INTO recipes (title, time, servings, datestamp) VALUES (?, ?, ?, UNIX_TIMESTAMP())', function (error, results, rows) {
+		if (error) {
+			throw error;
+		}
+		var id = results.insertId;
+	});
+
 });
 
 app.get('/me', function (req, res) {
