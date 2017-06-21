@@ -22,20 +22,38 @@ app.use(session({
   httpOnly: false
 }));
 
+/**
+ * Homepage
+ */
 app.get('/', function (req, res) {
 	fs.readFile('src/public/static/index.html', function (err, content) {
 		res.send(content.toString());
 	});
 });
 
+/**
+ * Upload Recipe page
+ */
 app.get('/upload', function (req, res) {
 	fs.readFile('src/public/static/upload.html', function (err, content) {
 		res.send(content.toString());
 	});
 });
 
+app.get('/recipe/:recipeId', function (req, res) {
+	fs.readFile('src/public/static/recipe.html', function (err, content) {
+		res.send(content.toString());
+	});
+});
+
+/**
+ * Save recipe
+ */
 app.post('/save', function (req, res) {
 	var data = req.body;
+	/**
+	 * Check if the data is good
+	 */
 	if (data.username === undefined ||
 			data.username.length === 0) {
 		res.send({
@@ -128,6 +146,9 @@ app.post('/save', function (req, res) {
 		return false;
 	}
 
+	/**
+	 * Fix some of the data
+	 */
 	if (data.ingredients[data.ingredients.length - 1].value.length === 0) {
 		data.ingredients.splice(data.ingredients.length - 1, 1);
 	}
@@ -135,6 +156,9 @@ app.post('/save', function (req, res) {
 		data.directions.splice(data.directions.length - 1, 1);
 	}
 
+	/**
+	 * Setup mysql connection
+	 */
 	var connection = mysql.createConnection({
 		host: 'localhost',
 		user: 'frugal_user',
@@ -144,6 +168,9 @@ app.post('/save', function (req, res) {
 
 	connection.connect();
 
+	/**
+	 * Insert recipes
+	 */
 	connection.query('INSERT INTO recipes (user, title, time, servings, datestamp) VALUES (?, ?, ?, ?, UNIX_TIMESTAMP())', [req.session.info.name, data.recipe, data.time, data.servings], function (error, results, rows) {
 		if (error) {
 			throw error;
@@ -151,6 +178,9 @@ app.post('/save', function (req, res) {
 		var id = results.insertId,
 			a,
 			b;
+		/**
+		 * Insert ingredients and directions
+		 */
 		for (a = 0; a < data.ingredients.length; a += 1) {
 			connection.query("INSERT INTO ingredients (ord, recipe_id, content, datestamp) VALUES (?, ?, ?, UNIX_TIMESTAMP())", [a, id, data.ingredients[a].value]);
 		}
@@ -158,6 +188,9 @@ app.post('/save', function (req, res) {
 			connection.query("INSERT INTO directions (ord, recipe_id, content, datestamp) VALUES (?, ?, ?, UNIX_TIMESTAMP())", [b, id, data.directions[b].value]);
 		}
 
+		/**
+		 * Upload image
+		 */
 		if (data.img !== undefined &&
 				data.img.length !== 0) {
 			var match = data.img.match(/^data:.+\/(.+);base64,(.*)$/i);
@@ -177,6 +210,8 @@ app.post('/save', function (req, res) {
 			}
 		}
 
+		connection.end();
+
 		res.send({
 			'success': id
 		});
@@ -184,6 +219,9 @@ app.post('/save', function (req, res) {
 
 });
 
+/**
+ * This is an internal request for session info, only works for currently logged in user
+ */
 app.get('/me', function (req, res) {
 	if (req.session === undefined ||
 			req.session.info === undefined) {
@@ -194,6 +232,9 @@ app.get('/me', function (req, res) {
 	return true;
 });
 
+/**
+ * Reddit oauth2 login code
+ */
 app.get('/get-token/', function (req, res) {
 	const getData = querystring.parse(req.originalUrl.replace('/get-token/?', ''));
 	if (getData.state !== undefined &&

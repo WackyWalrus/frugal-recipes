@@ -7,7 +7,8 @@ var APP_DIR = path.resolve(__dirname, 'src/js');
 var config = {
   entry: {
   	'index': [ APP_DIR + '/index.js' ],
-    'upload': [ APP_DIR + '/upload.js' ]
+    'upload': [ APP_DIR + '/upload.js' ],
+    'recipe': [ APP_DIR + '/recipe.js' ]
   },
   output: {
     path: BUILD_DIR,
