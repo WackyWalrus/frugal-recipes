@@ -98,6 +98,8 @@ class UploadForm extends React.Component {
 		data.username = window.user.name;
 
 		axios.post('/save', data).then(function (response) {
+			response = JSON.parse(response);
+
 			if (response.data.error !== undefined) {
 				console.log(response.data.error);
 				return false;
