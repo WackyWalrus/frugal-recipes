@@ -27,9 +27,41 @@ app.use(session({
  * Homepage
  */
 app.get('/', function (req, res) {
-	fs.readFile('src/public/static/index.html', function (err, content) {
-		res.send(content.toString());
+	/**
+	 * Setup mysql connection
+	 */
+	var connection = mysql.createConnection({
+		host: 'localhost',
+		user: 'frugal_user',
+		password: mysqlpass,
+		database: 'frugal'
 	});
+
+	connection.connect();
+
+	/**
+	 * Get recipes
+	 */
+	connection.query("SELECT * FROM recipes ORDER BY id DESC LIMIT 10", function (error, results, rows) {
+		var data = results;
+		/**
+		 * Get html file
+		 */
+		fs.readFile('src/public/static/index.html', function (err, content) {
+			var content = content.toString();
+			/**
+			 * Replace data
+			 */
+			if (data.length !== 0) {
+				content = content.replace('{recipe-data}', JSON.stringify(data));
+			}
+			/**
+			 * Serve file
+			 */
+			res.send(content.toString());
+		});
+	});
+
 });
 
 /**

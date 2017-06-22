@@ -50389,6 +50389,8 @@ var Recipe = function (_React$Component) {
 
 		var _this = _possibleConstructorReturn(this, (Recipe.__proto__ || Object.getPrototypeOf(Recipe)).call(this, props));
 
+		console.log(_this.props);
+
 		if (_this.props.full === true) {
 			var data = JSON.parse(document.querySelector('[name="page-data"]').value);
 			_this.state = data;
@@ -50482,6 +50484,8 @@ var Recipe = function (_React$Component) {
 					)
 				);
 			}
+
+			return _react2.default.createElement('div', { className: 'recipe' });
 		}
 	}]);
 

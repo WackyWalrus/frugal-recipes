@@ -50341,8 +50341,7 @@ user.getInfo(function (info) {
 /***/ }),
 /* 512 */,
 /* 513 */,
-/* 514 */,
-/* 515 */
+/* 514 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50370,6 +50369,163 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var Grid = ReactBootstrap.Grid,
+    Row = ReactBootstrap.Row,
+    Col = ReactBootstrap.Col,
+    Image = ReactBootstrap.Image,
+    ListGroup = ReactBootstrap.ListGroup,
+    ListGroupItem = ReactBootstrap.ListGroupItem,
+    Panel = ReactBootstrap.Panel,
+    Badge = ReactBootstrap.Badge;
+
+var axios = __webpack_require__(227);
+
+var Recipe = function (_React$Component) {
+	_inherits(Recipe, _React$Component);
+
+	function Recipe(props) {
+		_classCallCheck(this, Recipe);
+
+		var _this = _possibleConstructorReturn(this, (Recipe.__proto__ || Object.getPrototypeOf(Recipe)).call(this, props));
+
+		console.log(_this.props);
+
+		if (_this.props.full === true) {
+			var data = JSON.parse(document.querySelector('[name="page-data"]').value);
+			_this.state = data;
+		}
+		return _this;
+	}
+
+	_createClass(Recipe, [{
+		key: 'render',
+		value: function render() {
+			if (this.props.full === true) {
+
+				var image = '';
+
+				if (this.state.imagesrc !== undefined) {
+					image = _react2.default.createElement(Image, { src: this.state.imagesrc, rounded: true, responsive: true });
+				}
+
+				var ingredients = [];
+				for (var i = 0; i < this.state.ingredients.length; i += 1) {
+					ingredients.push(_react2.default.createElement(
+						ListGroupItem,
+						{ key: this.state.ingredients[i].id },
+						this.state.ingredients[i].content
+					));
+				}
+
+				var directions = [];
+				for (var i = 0; i < this.state.directions.length; i += 1) {
+					directions.push(_react2.default.createElement(
+						ListGroupItem,
+						{ key: this.state.ingredients[i].id },
+						this.state.directions[i].content
+					));
+				}
+
+				var userUrl = "http://reddit.com/u/" + this.state.user;
+
+				return _react2.default.createElement(
+					Grid,
+					{ fluid: true },
+					_react2.default.createElement(
+						Row,
+						null,
+						_react2.default.createElement(
+							Col,
+							{ sm: 3 },
+							image,
+							_react2.default.createElement(
+								'h3',
+								null,
+								this.state.title
+							),
+							_react2.default.createElement(
+								'h4',
+								null,
+								'By ',
+								_react2.default.createElement(
+									'a',
+									{ href: userUrl },
+									this.state.user
+								)
+							),
+							_react2.default.createElement(
+								'p',
+								null,
+								this.state.time,
+								' minutes'
+							),
+							_react2.default.createElement(
+								'p',
+								null,
+								this.state.servings,
+								' servings'
+							)
+						),
+						_react2.default.createElement(
+							Col,
+							{ sm: 9 },
+							_react2.default.createElement(
+								Panel,
+								{ header: 'Ingredients' },
+								ingredients
+							),
+							_react2.default.createElement(
+								Panel,
+								{ header: 'Directions' },
+								directions
+							)
+						)
+					)
+				);
+			}
+
+			return _react2.default.createElement('div', { className: 'recipe' });
+		}
+	}]);
+
+	return Recipe;
+}(_react2.default.Component);
+
+module.exports = Recipe;
+
+/***/ }),
+/* 515 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(16);
+
+var _reactBootstrap = __webpack_require__(63);
+
+var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
+
+var _Recipe = __webpack_require__(514);
+
+var _Recipe2 = _interopRequireDefault(_Recipe);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 var Form = ReactBootstrap.Form,
     FormGroup = ReactBootstrap.FormGroup,
     FormControl = ReactBootstrap.FormControl,
@@ -50381,10 +50537,30 @@ var Form = ReactBootstrap.Form,
 var RecipeList = function (_React$Component) {
 	_inherits(RecipeList, _React$Component);
 
-	function RecipeList() {
+	function RecipeList(props) {
 		_classCallCheck(this, RecipeList);
 
-		return _possibleConstructorReturn(this, (RecipeList.__proto__ || Object.getPrototypeOf(RecipeList)).apply(this, arguments));
+		var _this = _possibleConstructorReturn(this, (RecipeList.__proto__ || Object.getPrototypeOf(RecipeList)).call(this, props));
+
+		var data = document.getElementById('recipe-data').value;
+		if (data !== '{recipe-data}') {
+			data = JSON.parse(data);
+		} else {
+			var _ret;
+
+			return _ret = false, _possibleConstructorReturn(_this, _ret);
+		}
+
+		_this.state = {
+			recipes: []
+		};
+
+		var i;
+
+		for (i = 0; i < data.length; i += 1) {
+			_this.state.recipes.push(_react2.default.createElement(_Recipe2.default, { key: data[i].id, data: data[i] }));
+		}
+		return _this;
 	}
 
 	_createClass(RecipeList, [{
@@ -50425,7 +50601,12 @@ var RecipeList = function (_React$Component) {
 			return _react2.default.createElement(
 				'div',
 				{ className: 'recipeList' },
-				search
+				search,
+				_react2.default.createElement(
+					'div',
+					{ className: 'recipes' },
+					this.state.recipes
+				)
 			);
 		}
 	}]);
