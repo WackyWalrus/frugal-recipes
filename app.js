@@ -236,6 +236,15 @@ app.post('/save', function (req, res) {
 		});
 		return false;
 	}
+	if (data.selectedCategories.length === 0) {
+		res.send({
+			'error': {
+				'message': 'You need to choose at least one category',
+				'element': 'categories'
+			}
+		});
+		return false;
+	}
 	if (data.ingredients.length === 0) {
 		res.send({
 			'error': {
@@ -304,7 +313,8 @@ app.post('/save', function (req, res) {
 		}
 		var id = results.insertId,
 			a,
-			b;
+			b,
+			c;
 		/**
 		 * Insert ingredients and directions
 		 */
@@ -313,6 +323,9 @@ app.post('/save', function (req, res) {
 		}
 		for (b = 0; b < data.directions.length; b += 1) {
 			connection.query("INSERT INTO directions (ord, recipe_id, content, datestamp) VALUES (?, ?, ?, UNIX_TIMESTAMP())", [b, id, data.directions[b].value]);
+		}
+		for (c = 0; c < data.selectedCategories.length; c += 1) {
+			connection.query("INSERT INTO selected_categories (category_id, recipe_id, datestamp) VALUES (?, ?, UNIX_TIMESTAMP())", [data.selectedCategories[c], id]);
 		}
 
 		/**

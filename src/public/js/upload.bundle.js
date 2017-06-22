@@ -50462,7 +50462,16 @@ var UploadForm = function (_React$Component2) {
 	_createClass(UploadForm, [{
 		key: 'checkboxHandler',
 		value: function checkboxHandler(e) {
-			console.log(e);
+			var id = e.target.value,
+			    selected = this.state.selectedCategories;
+			if (e.target.checked === true) {
+				selected.push(id);
+			} else {
+				selected.splice(selected.indexOf(id), 1);
+			}
+			this.setState({
+				selectedCategories: selected
+			});
 		}
 	}, {
 		key: 'componentDidMount',
@@ -50476,7 +50485,7 @@ var UploadForm = function (_React$Component2) {
 				for (var i = 0; i < data.length; i += 1) {
 					list.push(_react2.default.createElement(
 						Checkbox,
-						{ key: data[i].id, onChange: checkboxFunc },
+						{ key: data[i].id, onChange: checkboxFunc, value: data[i].id },
 						data[i].title
 					));
 				}
@@ -50604,7 +50613,16 @@ var UploadForm = function (_React$Component2) {
 						k: 'servings',
 						onChange: this.textChangeHandler })
 				),
-				this.state.categories,
+				_react2.default.createElement(
+					FormGroup,
+					null,
+					_react2.default.createElement(
+						ControlLabel,
+						null,
+						'Categories'
+					),
+					this.state.categories
+				),
 				_react2.default.createElement(InteractiveList, { items: this.state.ingredients, name: 'Ingredients', k: 'ingredients', handler: this.interactiveListHandler }),
 				_react2.default.createElement(InteractiveList, { items: this.state.directions, name: 'Directions', k: 'directions', handler: this.interactiveListHandler }),
 				_react2.default.createElement(
@@ -50625,7 +50643,7 @@ var UploadForm = function (_React$Component2) {
 				),
 				_react2.default.createElement(
 					Button,
-					{ onClick: this.buttonClickHandler },
+					{ onClick: this.buttonClickHandler, className: 'pull-right', bsStyle: 'primary' },
 					'Upload'
 				)
 			);

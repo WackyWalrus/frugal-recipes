@@ -64,7 +64,16 @@ class UploadForm extends React.Component {
 	}
 
 	checkboxHandler(e) {
-		console.log(e);
+		var id = e.target.value,
+			selected = this.state.selectedCategories;
+		if (e.target.checked === true) {
+			selected.push(id);
+		} else {
+			selected.splice(selected.indexOf(id), 1);
+		}
+		this.setState({
+			selectedCategories: selected
+		});
 	}
 
 	componentDidMount() {
@@ -75,7 +84,7 @@ class UploadForm extends React.Component {
 			var data = response.data;
 			var list = [];
 			for (var i = 0; i < data.length; i += 1) {
-				list.push(<Checkbox key={data[i].id} onChange={checkboxFunc}>{data[i].title}</Checkbox>);
+				list.push(<Checkbox key={data[i].id} onChange={checkboxFunc} value={data[i].id}>{data[i].title}</Checkbox>);
 			}
 			_.setState({
 				categories: list
@@ -180,7 +189,10 @@ class UploadForm extends React.Component {
 					k='servings'
 					onChange={this.textChangeHandler} />
 			</FormGroup>
-			{this.state.categories}
+			<FormGroup>
+				<ControlLabel>Categories</ControlLabel>
+				{this.state.categories}
+			</FormGroup>
 			<InteractiveList items={this.state.ingredients} name="Ingredients" k="ingredients" handler={this.interactiveListHandler} />
 			<InteractiveList items={this.state.directions} name="Directions" k="directions" handler={this.interactiveListHandler} />
 			<FormGroup>
@@ -191,7 +203,7 @@ class UploadForm extends React.Component {
 						onChange={this.fileHandler} />
 				</InputGroup>
 			</FormGroup>
-			<Button onClick={this.buttonClickHandler}>Upload</Button>
+			<Button onClick={this.buttonClickHandler} className="pull-right" bsStyle="primary">Upload</Button>
 		</form>;
 	}
 }
