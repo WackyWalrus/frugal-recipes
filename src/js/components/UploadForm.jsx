@@ -46,11 +46,12 @@ class UploadForm extends React.Component {
 		this.interactiveListHandler = this.interactiveListHandler.bind(this);
 		this.textChangeHandler = this.textChangeHandler.bind(this);
 		this.fileHandler = this.fileHandler.bind(this);
+		this.checkboxHandler = this.checkboxHandler.bind(this);
 		this.state = {
 			recipe: '',
 			time: '',
 			servings: '',
-			selectedCategories: '',
+			selectedCategories: [],
 			ingredients: [{
 				'value': ''
 			}],
@@ -62,13 +63,19 @@ class UploadForm extends React.Component {
 		}
 	}
 
+	checkboxHandler(e) {
+		console.log(e);
+	}
+
 	componentDidMount() {
 		var _ = this;
+		var checkboxFunc = this.checkboxHandler;
+
 		axios.get('/categories').then(function (response) {
 			var data = response.data;
 			var list = [];
 			for (var i = 0; i < data.length; i += 1) {
-				list.push(<Checkbox key={data[i].id}>{data[i].title}</Checkbox>);
+				list.push(<Checkbox key={data[i].id} onChange={checkboxFunc}>{data[i].title}</Checkbox>);
 			}
 			_.setState({
 				categories: list

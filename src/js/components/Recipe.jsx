@@ -25,7 +25,6 @@ class Recipe extends React.Component {
 
 	render() {
 		if (this.props.full === true) {
-			console.log(this.state);
 
 			var image = '';
 
@@ -35,12 +34,12 @@ class Recipe extends React.Component {
 
 			var ingredients = [];
 			for (var i = 0; i < this.state.ingredients.length; i += 1) {
-				ingredients.push(<ListGroupItem>{this.state.ingredients[i].content}</ListGroupItem>);
+				ingredients.push(<ListGroupItem key={this.state.ingredients[i].id}>{this.state.ingredients[i].content}</ListGroupItem>);
 			}
 
 			var directions = [];
 			for (var i = 0; i < this.state.directions.length; i += 1) {
-				directions.push(<ListGroupItem>{this.state.directions[i].content}</ListGroupItem>);
+				directions.push(<ListGroupItem key={this.state.ingredients[i].id}>{this.state.directions[i].content}</ListGroupItem>);
 			}
 
 			var userUrl = "http://reddit.com/u/" + this.state.user;
