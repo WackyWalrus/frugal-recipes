@@ -17,8 +17,6 @@ class Recipe extends React.Component {
 	constructor(props) {
 		super(props);
 
-		console.log(this.props);
-
 		if (this.props.full === true) {
 			var data = JSON.parse(document.querySelector('[name="page-data"]').value);
 			this.state = data;
@@ -67,7 +65,10 @@ class Recipe extends React.Component {
 			</Grid>;
 		}
 
-		return <div className="recipe"></div>;
+		return <div className="recipe">
+			<h2>{this.props.data.title}</h2>
+			<p>{this.props.data.time} minutes<br />{this.props.data.servings} servings</p>
+		</div>;
 	}
 }
 
