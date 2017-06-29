@@ -28,7 +28,7 @@ class SideNav extends React.Component {
 	}
 	render() {
 		return <ListGroup>
-			<ListGroupItem href="#" active="true">All</ListGroupItem>
+			<ListGroupItem href="/" active="true">All</ListGroupItem>
 			{this.state.list}
 		</ListGroup>;
 	}

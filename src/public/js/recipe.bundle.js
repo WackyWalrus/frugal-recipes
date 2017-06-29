@@ -24280,7 +24280,7 @@ var SideNav = function (_React$Component) {
 				null,
 				_react2.default.createElement(
 					ListGroupItem,
-					{ href: '#', active: 'true' },
+					{ href: '/', active: 'true' },
 					'All'
 				),
 				this.state.list

@@ -39,15 +39,24 @@ app.get('/', function (req, res) {
 
 	connection.connect();
 
-	var query = "SELECT * FROM recipes ORDER BY id DESC LIMIT 10";
+	var query = "SELECT * FROM recipes WHERE 1";
 	var variables = [];
 
 	if (req.query !== undefined &&
 			req.query.q !== undefined &&
 			req.query.q.length !== 0) {
-		query = "SELECT * FROM recipes WHERE title LIKE ? ORDER BY id DESC LIMIT 10";
-		variables = ["%" + req.query.q + "%"];
+		query += " AND title LIKE ? ";
+		variables.push("%" + req.query.q + "%");
 	}
+
+	if (req.query !== undefined &&
+			req.query.category !== undefined &&
+			req.query.category.length !== 0) {
+		query += " AND ? IN (SELECT category_id FROM selected_categories WHERE recipe_id = recipes.id) ";
+		variables.push(req.query.category);
+	}
+
+	query += " ORDER BY id DESC LIMIT 10";
 
 	/**
 	 * Get recipes
