@@ -24263,7 +24263,7 @@ var SideNav = function (_React$Component) {
 				for (var i = 0; i < data.length; i += 1) {
 					list.push(_react2.default.createElement(
 						ListGroupItem,
-						{ key: data[i].id, href: '#' },
+						{ key: data[i].id, href: "/?category=" + data[i].id },
 						data[i].title
 					));
 				}

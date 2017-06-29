@@ -19,7 +19,7 @@ class SideNav extends React.Component {
 			var data = response.data;
 			var list = [];
 			for (var i = 0; i < data.length; i += 1) {
-				list.push(<ListGroupItem key={data[i].id} href="#">{data[i].title}</ListGroupItem>);
+				list.push(<ListGroupItem key={data[i].id} href={"/?category=" + data[i].id}>{data[i].title}</ListGroupItem>);
 			}
 			_.setState({
 				list: list
