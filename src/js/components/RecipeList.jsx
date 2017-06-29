@@ -3,6 +3,21 @@ import {render} from 'react-dom';
 import * as ReactBootstrap from 'react-bootstrap';
 import Recipe from './Recipe.jsx';
 
+var Url = require('url'),
+	url = Url.parse(window.location.href);
+
+var query = '';
+
+if (url.query !== null &&
+		url.query.indexOf('q=') !== -1) {
+	var split = url.query.split('&');
+	for (var i = 0; i < split.length; i += 1) {
+		if (split[i].indexOf('q=') == 0) {
+			query = split[i].replace('q=', '');
+		}
+	}
+}
+
 const Form = ReactBootstrap.Form,
 	FormGroup = ReactBootstrap.FormGroup,
 	FormControl = ReactBootstrap.FormControl,
@@ -15,15 +30,18 @@ class RecipeList extends React.Component {
 	constructor(props) {
 		super(props);
 
+		this.inputChange_handler = this.inputChange_handler.bind(this);
+
 		var data = document.getElementById('recipe-data').value;
 		if (data !== '{recipe-data}') {
 			data = JSON.parse(data);
 		} else {
-			return false;
+			data = [];
 		}
 
 		this.state = {
-			recipes: []
+			recipes: [],
+			query: query
 		};
 
 		var i;
@@ -33,16 +51,25 @@ class RecipeList extends React.Component {
 		}
 	}
 
+	inputChange_handler(e) {
+		this.setState({
+			query: e.target.value
+		});
+	}
+
 	render() {
 		var search = '';
 		if (this.props.search) {
-			search = <Form>
+			search = <Form method="get" action="/">
 				<FormGroup>
 						<Row>
 							<Col sm={10}>
 								<FormControl
 									type="text"
 									placeholder="Search..."
+									name="q"
+									value={this.state.query}
+									onChange={this.inputChange_handler}
 								/>
 							</Col>
 							<Col sm={2}>

@@ -39,10 +39,20 @@ app.get('/', function (req, res) {
 
 	connection.connect();
 
+	var query = "SELECT * FROM recipes ORDER BY id DESC LIMIT 10";
+	var variables = [];
+
+	if (req.query !== undefined &&
+			req.query.q !== undefined &&
+			req.query.q.length !== 0) {
+		query = "SELECT * FROM recipes WHERE title LIKE ? ORDER BY id DESC LIMIT 10";
+		variables = ["%" + req.query.q + "%"];
+	}
+
 	/**
 	 * Get recipes
 	 */
-	connection.query("SELECT * FROM recipes ORDER BY id DESC LIMIT 10", function (error, results, rows) {
+	connection.query(query, variables, function (error, results, rows) {
 		var data = results;
 		/**
 		 * Get html file
