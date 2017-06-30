@@ -63,6 +63,7 @@ app.get('/', function (req, res) {
 	 */
 	connection.query(query, variables, function (error, results, rows) {
 		var data = results;
+
 		/**
 		 * Get html file
 		 */
@@ -71,7 +72,8 @@ app.get('/', function (req, res) {
 			/**
 			 * Replace data
 			 */
-			if (data.length !== 0) {
+			if (data !== undefined &&
+					data.length !== 0) {
 				content = content.replace('{recipe-data}', JSON.stringify(data));
 			}
 			/**

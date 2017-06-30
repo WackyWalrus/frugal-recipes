@@ -15,7 +15,7 @@ class Body extends React.Component {
 			var bod = <Grid fluid>
 				<Row>
 					<Col sm={3}>
-						<SideNav />
+						<SideNav category={this.props.category} />
 					</Col>
 					<Col sm={9}>
 						<Content>{this.props.children}</Content>

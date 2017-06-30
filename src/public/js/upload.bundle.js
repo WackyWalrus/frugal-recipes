@@ -24706,7 +24706,7 @@ var Body = function (_React$Component) {
 						_react2.default.createElement(
 							Col,
 							{ sm: 3 },
-							_react2.default.createElement(_SideNav2.default, null)
+							_react2.default.createElement(_SideNav2.default, { category: this.props.category })
 						),
 						_react2.default.createElement(
 							Col,
@@ -24967,8 +24967,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var axios = __webpack_require__(136);
-var URL = __webpack_require__(228);
-var url = URL.parse(window.location.href);
 
 var ListGroup = ReactBootstrap.ListGroup,
     ListGroupItem = ReactBootstrap.ListGroupItem;
@@ -24992,12 +24990,21 @@ var SideNav = function (_React$Component) {
 			axios.get('/categories').then(function (response) {
 				var data = response.data;
 				var list = [];
+
 				for (var i = 0; i < data.length; i += 1) {
-					list.push(_react2.default.createElement(
-						ListGroupItem,
-						{ key: data[i].id, href: "/?category=" + data[i].id },
-						data[i].title
-					));
+					if (data[i].id === _.props.category) {
+						list.push(_react2.default.createElement(
+							ListGroupItem,
+							{ key: data[i].id, href: "/?category=" + data[i].id, active: 'true' },
+							data[i].title
+						));
+					} else {
+						list.push(_react2.default.createElement(
+							ListGroupItem,
+							{ key: data[i].id, href: "/?category=" + data[i].id },
+							data[i].title
+						));
+					}
 				}
 				_.setState({
 					list: list
@@ -25007,12 +25014,24 @@ var SideNav = function (_React$Component) {
 	}, {
 		key: 'render',
 		value: function render() {
+			if (this.props.category === 0) {
+				return _react2.default.createElement(
+					ListGroup,
+					null,
+					_react2.default.createElement(
+						ListGroupItem,
+						{ href: '/', active: 'true' },
+						'All'
+					),
+					this.state.list
+				);
+			}
 			return _react2.default.createElement(
 				ListGroup,
 				null,
 				_react2.default.createElement(
 					ListGroupItem,
-					{ href: '/', active: 'true' },
+					{ href: '/' },
 					'All'
 				),
 				this.state.list

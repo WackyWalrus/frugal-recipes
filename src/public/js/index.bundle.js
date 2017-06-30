@@ -24706,7 +24706,7 @@ var Body = function (_React$Component) {
 						_react2.default.createElement(
 							Col,
 							{ sm: 3 },
-							_react2.default.createElement(_SideNav2.default, null)
+							_react2.default.createElement(_SideNav2.default, { category: this.props.category })
 						),
 						_react2.default.createElement(
 							Col,
@@ -24967,8 +24967,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var axios = __webpack_require__(136);
-var URL = __webpack_require__(228);
-var url = URL.parse(window.location.href);
 
 var ListGroup = ReactBootstrap.ListGroup,
     ListGroupItem = ReactBootstrap.ListGroupItem;
@@ -24992,12 +24990,21 @@ var SideNav = function (_React$Component) {
 			axios.get('/categories').then(function (response) {
 				var data = response.data;
 				var list = [];
+
 				for (var i = 0; i < data.length; i += 1) {
-					list.push(_react2.default.createElement(
-						ListGroupItem,
-						{ key: data[i].id, href: "/?category=" + data[i].id },
-						data[i].title
-					));
+					if (data[i].id === _.props.category) {
+						list.push(_react2.default.createElement(
+							ListGroupItem,
+							{ key: data[i].id, href: "/?category=" + data[i].id, active: 'true' },
+							data[i].title
+						));
+					} else {
+						list.push(_react2.default.createElement(
+							ListGroupItem,
+							{ key: data[i].id, href: "/?category=" + data[i].id },
+							data[i].title
+						));
+					}
 				}
 				_.setState({
 					list: list
@@ -25007,12 +25014,24 @@ var SideNav = function (_React$Component) {
 	}, {
 		key: 'render',
 		value: function render() {
+			if (this.props.category === 0) {
+				return _react2.default.createElement(
+					ListGroup,
+					null,
+					_react2.default.createElement(
+						ListGroupItem,
+						{ href: '/', active: 'true' },
+						'All'
+					),
+					this.state.list
+				);
+			}
 			return _react2.default.createElement(
 				ListGroup,
 				null,
 				_react2.default.createElement(
 					ListGroupItem,
-					{ href: '/', active: 'true' },
+					{ href: '/' },
 					'All'
 				),
 				this.state.list
@@ -50463,6 +50482,41 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var Url = __webpack_require__(228);
+var url = Url.parse(window.location.href);
+
+var category = 0;
+var query = '';
+
+if (url.query !== null) {
+	if (url.query.indexOf('category=') !== -1) {
+		category = url.query.split('&');
+
+		for (var i = 0; i < category.length; i += 1) {
+			if (category[i].indexOf('category') !== -1) {
+				category = category[i];
+				break;
+			}
+		}
+
+		category = parseInt(category.replace('category=', ''), 10);
+	} else {
+		category = 0;
+	}
+
+	if (url.query.indexOf('q=') !== -1) {
+		var split = url.query.split('&');
+		for (var i = 0; i < split.length; i += 1) {
+			if (split[i].indexOf('q=') == 0) {
+				query = split[i].replace('q=', '');
+				break;
+			}
+		}
+	}
+} else {
+	category = 0;
+}
+
 var User = __webpack_require__(250),
     user = new User();
 
@@ -50488,8 +50542,8 @@ user.getInfo(function (info) {
 					_react2.default.createElement(_Navigation2.default, null),
 					_react2.default.createElement(
 						_Body2.default,
-						{ sidebar: true },
-						_react2.default.createElement(_RecipeList2.default, { search: true })
+						{ sidebar: true, category: category },
+						_react2.default.createElement(_RecipeList2.default, { search: true, query: query, category: category })
 					)
 				);
 			}
@@ -50536,20 +50590,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Url = __webpack_require__(228),
-    url = Url.parse(window.location.href);
-
-var query = '';
-
-if (url.query !== null && url.query.indexOf('q=') !== -1) {
-	var split = url.query.split('&');
-	for (var i = 0; i < split.length; i += 1) {
-		if (split[i].indexOf('q=') == 0) {
-			query = split[i].replace('q=', '');
-		}
-	}
-}
-
 var Form = ReactBootstrap.Form,
     FormGroup = ReactBootstrap.FormGroup,
     FormControl = ReactBootstrap.FormControl,
@@ -50577,7 +50617,7 @@ var RecipeList = function (_React$Component) {
 
 		_this.state = {
 			recipes: [],
-			query: query
+			query: _this.props.query
 		};
 
 		if (data.length === 0) {
@@ -50607,6 +50647,7 @@ var RecipeList = function (_React$Component) {
 				search = _react2.default.createElement(
 					Form,
 					{ method: 'get', action: '/' },
+					_react2.default.createElement('input', { type: 'hidden', name: 'category', value: this.props.category }),
 					_react2.default.createElement(
 						FormGroup,
 						null,
@@ -50645,6 +50686,11 @@ var RecipeList = function (_React$Component) {
 					'div',
 					{ className: 'recipes' },
 					this.state.recipes
+				),
+				_react2.default.createElement(
+					Button,
+					null,
+					'Load More'
 				)
 			);
 		}

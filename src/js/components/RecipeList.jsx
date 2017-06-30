@@ -3,21 +3,6 @@ import {render} from 'react-dom';
 import * as ReactBootstrap from 'react-bootstrap';
 import Recipe from './Recipe.jsx';
 
-var Url = require('url'),
-	url = Url.parse(window.location.href);
-
-var query = '';
-
-if (url.query !== null &&
-		url.query.indexOf('q=') !== -1) {
-	var split = url.query.split('&');
-	for (var i = 0; i < split.length; i += 1) {
-		if (split[i].indexOf('q=') == 0) {
-			query = split[i].replace('q=', '');
-		}
-	}
-}
-
 const Form = ReactBootstrap.Form,
 	FormGroup = ReactBootstrap.FormGroup,
 	FormControl = ReactBootstrap.FormControl,
@@ -41,7 +26,7 @@ class RecipeList extends React.Component {
 
 		this.state = {
 			recipes: [],
-			query: query
+			query: this.props.query
 		};
 
 		if (data.length === 0) {
@@ -65,6 +50,7 @@ class RecipeList extends React.Component {
 		var search = '';
 		if (this.props.search) {
 			search = <Form method="get" action="/">
+				<input type="hidden" name="category" value={this.props.category} />
 				<FormGroup>
 						<Row>
 							<Col sm={10}>
@@ -88,6 +74,7 @@ class RecipeList extends React.Component {
 			<div className="recipes">
 				{this.state.recipes}
 			</div>
+			<Button>Load More</Button>
 		</div>;
 	}
 }
