@@ -4,6 +4,8 @@ import {render} from 'react-dom';
 import * as ReactBootstrap from 'react-bootstrap';
 
 var axios = require('axios');
+var URL = require('url');
+var url = URL.parse(window.location.href);
 
 const ListGroup = ReactBootstrap.ListGroup,
 	ListGroupItem = ReactBootstrap.ListGroupItem;

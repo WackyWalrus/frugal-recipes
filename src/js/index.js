@@ -6,6 +6,8 @@ import Navigation from './components/Navigation.jsx';
 import Body from './components/Body.jsx';
 import RecipeList from './components/RecipeList.jsx';
 
+import '../sass/styles.scss';
+
 var User = require('./components/User.jsx'),
 	user = new User();
 

@@ -47,9 +47,6 @@ class Navigation extends React.Component {
 				<Navbar.Toggle />
 			</Navbar.Header>
 			<Navbar.Collapse>
-				<Nav onSelect={handleSelect}>
-					<NavItem eventKey={'/recipes'} href="/recipes">Recipes</NavItem>
-				</Nav>
 				{right}
 			</Navbar.Collapse>
 		</Navbar>;

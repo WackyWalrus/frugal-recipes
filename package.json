@@ -25,6 +25,7 @@
     "es2015": "0.0.0",
     "express": "^4.15.3",
     "express-session": "^1.15.3",
+    "extract-text-webpack-plugin": "^2.1.2",
     "file-loader": "^0.11.2",
     "glob": "^7.1.2",
     "mysql": "^2.13.0",
@@ -34,6 +35,8 @@
     "react-bootstrap": "^0.31.0",
     "react-dom": "^15.6.1",
     "request": "^2.81.0",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.18.2",
     "webpack": "^2.6.1"
   }
 }

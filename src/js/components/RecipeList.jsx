@@ -44,6 +44,10 @@ class RecipeList extends React.Component {
 			query: query
 		};
 
+		if (data.length === 0) {
+			this.state.recipes = "No results";
+		}
+
 		var i;
 
 		for (i = 0; i < data.length; i += 1) {
