@@ -51,12 +51,15 @@ app.get('/', function (req, res) {
 
 	if (req.query !== undefined &&
 			req.query.category !== undefined &&
-			req.query.category.length !== 0) {
+			req.query.category.length !== 0 &&
+			parseInt(req.query.category, 10) !== 0) {
 		query += " AND ? IN (SELECT category_id FROM selected_categories WHERE recipe_id = recipes.id) ";
 		variables.push(req.query.category);
 	}
 
 	query += " ORDER BY id DESC LIMIT 10";
+
+	console.log(query);
 
 	/**
 	 * Get recipes
