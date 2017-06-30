@@ -59,8 +59,6 @@ app.get('/', function (req, res) {
 
 	query += " ORDER BY id DESC LIMIT 10";
 
-	console.log(query);
-
 	/**
 	 * Get recipes
 	 */
@@ -227,6 +225,29 @@ app.get('/recipe/:recipeId', function (req, res) {
 		});
 
 	});
+});
+
+/**
+ * Profile page
+ */
+app.get('/profile/:username', function (req, res) {
+	var username = '';
+	if (req.params.username !== undefined) {
+		username = req.params.username;
+	}
+
+	if (username !== '') {
+		/**
+		 * Get html file
+		 */
+		fs.readFile('src/public/static/profile.html', function (err, content) {
+			var content = content.toString();
+			/**
+			 * Serve file
+			 */
+			res.send(content.toString());
+		});
+	}
 });
 
 /**
