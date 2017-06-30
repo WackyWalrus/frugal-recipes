@@ -66,7 +66,7 @@ class Recipe extends React.Component {
 		}
 
 		return <div className="recipe">
-			<h2>{this.props.data.title}</h2>
+			<h2><a href={"/recipe/" + this.props.data.id}>{this.props.data.title}</a></h2>
 			<p>{this.props.data.time} minutes<br />{this.props.data.servings} servings</p>
 		</div>;
 	}

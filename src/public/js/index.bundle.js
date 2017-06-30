@@ -50417,7 +50417,11 @@ var Recipe = function (_React$Component) {
 				_react2.default.createElement(
 					'h2',
 					null,
-					this.props.data.title
+					_react2.default.createElement(
+						'a',
+						{ href: "/recipe/" + this.props.data.id },
+						this.props.data.title
+					)
 				),
 				_react2.default.createElement(
 					'p',
