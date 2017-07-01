@@ -257,7 +257,7 @@ app.get('/profile/:username', function (req, res) {
 
 			var fixHTML = new Promise(function (resolve, reject) {
 				data = {
-					'name': username;
+					'name': username
 				};
 				if (html = html.replace('{profile-data}', JSON.stringify(data))) {
 					resolve(html);
