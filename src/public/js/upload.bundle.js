@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 520);
+/******/ 	return __webpack_require__(__webpack_require__.s = 522);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -25053,10 +25053,16 @@ module.exports = SideNav;
 
 var http = __webpack_require__(499);
 
-var User = function User() {};
+var User = function User(username) {
+	if (username === undefined) {
+		this.get = '/me';
+	} else {
+		this.get = '/me/' + username;
+	}
+};
 
 User.prototype.getInfo = function (cb) {
-	http.get('/me', function (res) {
+	http.get(this.get, function (res) {
 		var str = '';
 		res.on('data', function (chunk) {
 			str += chunk;
@@ -50273,7 +50279,10 @@ function extend() {
 /* 511 */,
 /* 512 */,
 /* 513 */,
-/* 514 */
+/* 514 */,
+/* 515 */,
+/* 516 */,
+/* 517 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50303,7 +50312,7 @@ var _Body = __webpack_require__(246);
 
 var _Body2 = _interopRequireDefault(_Body);
 
-var _UploadForm = __webpack_require__(516);
+var _UploadForm = __webpack_require__(518);
 
 var _UploadForm2 = _interopRequireDefault(_UploadForm);
 
@@ -50354,8 +50363,7 @@ user.getInfo(function (info) {
 });
 
 /***/ }),
-/* 515 */,
-/* 516 */
+/* 518 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50668,13 +50676,13 @@ var UploadForm = function (_React$Component2) {
 module.exports = UploadForm;
 
 /***/ }),
-/* 517 */,
-/* 518 */,
 /* 519 */,
-/* 520 */
+/* 520 */,
+/* 521 */,
+/* 522 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(514);
+module.exports = __webpack_require__(517);
 
 
 /***/ })

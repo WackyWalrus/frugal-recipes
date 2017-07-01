@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 519);
+/******/ 	return __webpack_require__(__webpack_require__.s = 520);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -50598,7 +50598,8 @@ module.exports = RecipeList;
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 514 */
+/* 514 */,
+/* 515 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50642,41 +50643,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Url = __webpack_require__(228);
-var url = Url.parse(window.location.href);
-
-var category = 0;
-var query = '';
-
-if (url.query !== null) {
-	if (url.query.indexOf('category=') !== -1) {
-		category = url.query.split('&');
-
-		for (var i = 0; i < category.length; i += 1) {
-			if (category[i].indexOf('category') !== -1) {
-				category = category[i];
-				break;
-			}
-		}
-
-		category = parseInt(category.replace('category=', ''), 10);
-	} else {
-		category = 0;
-	}
-
-	if (url.query.indexOf('q=') !== -1) {
-		var split = url.query.split('&');
-		for (var i = 0; i < split.length; i += 1) {
-			if (split[i].indexOf('q=') == 0) {
-				query = split[i].replace('q=', '');
-				break;
-			}
-		}
-	}
-} else {
-	category = 0;
-}
-
 var User = __webpack_require__(250),
     user = new User();
 
@@ -50700,11 +50666,7 @@ user.getInfo(function (info) {
 					_Wrapper2.default,
 					null,
 					_react2.default.createElement(_Navigation2.default, null),
-					_react2.default.createElement(
-						_Body2.default,
-						{ sidebar: true, category: category },
-						_react2.default.createElement(_RecipeList2.default, { search: true, query: query, category: category })
-					)
+					_react2.default.createElement(_Body2.default, null)
 				);
 			}
 		}]);
@@ -50716,14 +50678,14 @@ user.getInfo(function (info) {
 });
 
 /***/ }),
-/* 515 */,
 /* 516 */,
 /* 517 */,
 /* 518 */,
-/* 519 */
+/* 519 */,
+/* 520 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(514);
+module.exports = __webpack_require__(515);
 
 
 /***/ })

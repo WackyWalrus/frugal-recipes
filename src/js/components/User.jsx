@@ -1,9 +1,15 @@
 var http = require('http');
 
-var User = function () {}
+var User = function (username) {
+	if (username === undefined) {
+		this.get = '/me';
+	} else {
+		this.get = '/me/' + username;
+	}
+}
 
 User.prototype.getInfo = function(cb) {
-	http.get('/me', function (res) {
+	http.get(this.get, function (res) {
 		var str = '';
 		res.on('data', function (chunk) {
 			str += chunk;

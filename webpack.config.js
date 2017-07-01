@@ -10,7 +10,8 @@ var config = {
   entry: {
   	'index': [ APP_DIR + '/index.js' ],
     'upload': [ APP_DIR + '/upload.js' ],
-    'recipe': [ APP_DIR + '/recipe.js' ]
+    'recipe': [ APP_DIR + '/recipe.js' ],
+    'profile': [ APP_DIR + '/profile.js' ]
   },
   output: {
     path: BUILD_DIR,

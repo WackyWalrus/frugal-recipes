@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 519);
+/******/ 	return __webpack_require__(__webpack_require__.s = 521);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -25053,10 +25053,16 @@ module.exports = SideNav;
 
 var http = __webpack_require__(499);
 
-var User = function User() {};
+var User = function User(username) {
+	if (username === undefined) {
+		this.get = '/me';
+	} else {
+		this.get = '/me/' + username;
+	}
+};
 
 User.prototype.getInfo = function (cb) {
-	http.get('/me', function (res) {
+	http.get(this.get, function (res) {
 		var str = '';
 		res.on('data', function (chunk) {
 			str += chunk;
@@ -50443,7 +50449,10 @@ module.exports = Recipe;
 
 /***/ }),
 /* 512 */,
-/* 513 */
+/* 513 */,
+/* 514 */,
+/* 515 */,
+/* 516 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50525,15 +50534,14 @@ user.getInfo(function (info) {
 });
 
 /***/ }),
-/* 514 */,
-/* 515 */,
-/* 516 */,
 /* 517 */,
 /* 518 */,
-/* 519 */
+/* 519 */,
+/* 520 */,
+/* 521 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(513);
+module.exports = __webpack_require__(516);
 
 
 /***/ })

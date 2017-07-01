@@ -227,6 +227,18 @@ app.get('/recipe/:recipeId', function (req, res) {
 	});
 });
 
+app.get('/profile', function (req, res) {
+	if (req.session === undefined ||
+			req.session.info === undefined) {
+		return false;
+	}
+
+	fs.readFile('src/public/static/profile.html', function (err, content) {
+		var content = content.toString();
+		res.send(content);
+	});
+});
+
 /**
  * Profile page
  */
@@ -245,7 +257,7 @@ app.get('/profile/:username', function (req, res) {
 			/**
 			 * Serve file
 			 */
-			res.send(content.toString());
+			res.send(content);
 		});
 	}
 });
