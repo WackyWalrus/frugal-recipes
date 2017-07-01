@@ -253,11 +253,21 @@ app.get('/profile/:username', function (req, res) {
 		 * Get html file
 		 */
 		fs.readFile('src/public/static/profile.html', function (err, content) {
-			var content = content.toString();
-			/**
-			 * Serve file
-			 */
-			res.send(content);
+			var html = content.toString();
+
+			var fixHTML = new Promise(function (resolve, reject) {
+				if (html = html.replace('{profile-data}', JSON.stringify(data))) {
+					resolve(html);
+				}
+			});
+
+			fixHTML.then(function (result) {
+				/**
+				 * Serve html
+				 */
+				res.send(result);
+				connection.end();
+			});
 		});
 	}
 });
