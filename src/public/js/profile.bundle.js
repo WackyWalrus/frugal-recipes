@@ -25053,22 +25053,21 @@ module.exports = SideNav;
 
 var http = __webpack_require__(499);
 
-var User = function User(username) {
-	if (username === undefined) {
-		this.get = '/me';
-	} else {
-		this.get = '/me/' + username;
+var User = function User(name) {
+	if (name !== undefined) {
+		this.name = name;
 	}
 };
 
 User.prototype.getInfo = function (cb) {
-	http.get(this.get, function (res) {
+	http.get('/me', function (res) {
 		var str = '';
 		res.on('data', function (chunk) {
 			str += chunk;
 		});
 		res.on('end', function () {
 			this.info = JSON.parse(str);
+			this.name = this.info.name;
 			if (cb !== undefined) {
 				cb(this.info);
 			}
@@ -50633,6 +50632,10 @@ var _RecipeList = __webpack_require__(512);
 
 var _RecipeList2 = _interopRequireDefault(_RecipeList);
 
+var _Profile = __webpack_require__(527);
+
+var _Profile2 = _interopRequireDefault(_Profile);
+
 __webpack_require__(513);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -50643,8 +50646,17 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var User = __webpack_require__(250),
-    user = new User();
+var User = __webpack_require__(250);
+var userData = document.getElementById('user-data').value;
+var user;
+
+if (userData === '{user-data}') {
+	user = new User();
+} else {
+	var data = JSON.parse(userData);
+
+	user = new User(data.name);
+}
 
 user.getInfo(function (info) {
 
@@ -50666,7 +50678,11 @@ user.getInfo(function (info) {
 					_Wrapper2.default,
 					null,
 					_react2.default.createElement(_Navigation2.default, null),
-					_react2.default.createElement(_Body2.default, null)
+					_react2.default.createElement(
+						_Body2.default,
+						null,
+						_react2.default.createElement(_Profile2.default, { user: user })
+					)
 				);
 			}
 		}]);
@@ -50687,6 +50703,71 @@ user.getInfo(function (info) {
 
 module.exports = __webpack_require__(515);
 
+
+/***/ }),
+/* 521 */,
+/* 522 */,
+/* 523 */,
+/* 524 */,
+/* 525 */,
+/* 526 */,
+/* 527 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _Site = __webpack_require__(69);
+
+var _Site2 = _interopRequireDefault(_Site);
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(16);
+
+var _reactBootstrap = __webpack_require__(56);
+
+var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Profile = function (_React$Component) {
+	_inherits(Profile, _React$Component);
+
+	function Profile() {
+		_classCallCheck(this, Profile);
+
+		return _possibleConstructorReturn(this, (Profile.__proto__ || Object.getPrototypeOf(Profile)).apply(this, arguments));
+	}
+
+	_createClass(Profile, [{
+		key: 'render',
+		value: function render() {
+			console.log(this.props.user);
+			return _react2.default.createElement(
+				'div',
+				null,
+				'woo'
+			);
+		}
+	}]);
+
+	return Profile;
+}(_react2.default.Component);
+
+module.exports = Profile;
 
 /***/ })
 /******/ ]);

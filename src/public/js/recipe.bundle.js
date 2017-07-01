@@ -25053,22 +25053,21 @@ module.exports = SideNav;
 
 var http = __webpack_require__(499);
 
-var User = function User(username) {
-	if (username === undefined) {
-		this.get = '/me';
-	} else {
-		this.get = '/me/' + username;
+var User = function User(name) {
+	if (name !== undefined) {
+		this.name = name;
 	}
 };
 
 User.prototype.getInfo = function (cb) {
-	http.get(this.get, function (res) {
+	http.get('/me', function (res) {
 		var str = '';
 		res.on('data', function (chunk) {
 			str += chunk;
 		});
 		res.on('end', function () {
 			this.info = JSON.parse(str);
+			this.name = this.info.name;
 			if (cb !== undefined) {
 				cb(this.info);
 			}
