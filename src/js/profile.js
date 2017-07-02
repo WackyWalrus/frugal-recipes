@@ -9,30 +9,41 @@ import Profile from './components/Profile.jsx';
 
 import '../sass/styles.scss';
 
-var User = require('./components/User.jsx');
-var userData = document.getElementById('user-data').value;
-var user;
-
-if (userData === '{user-data}') {
+var User = require('./components/User.jsx'),
 	user = new User();
-} else {
-	var data = JSON.parse(userData);
 
-	user = new User(data.name);
-}
-
-
+var Url = require('url'),
+	url = Url.parse(window.location.href);
 
 user.getInfo(function (info) {
 
 	window.user = info;
 
 	class Index extends React.Component {
+		constructor(props) {
+			super(props);
+
+
+			var u = url.pathname.replace('/profile/', '');
+
+			if (u === '') {
+				if (user.name !== undefined) {
+					u = user.name;
+				} else {
+					return false;
+				}
+			}
+
+			this.state = {
+				user: u
+			}
+		}
+
 		render() {
 			return <Wrapper>
 				<Navigation />
 				<Body>
-					<Profile user={user}/>
+					<Profile user={this.state.user} />
 				</Body>
 			</Wrapper>
 		}

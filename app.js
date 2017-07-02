@@ -117,6 +117,9 @@ app.get('/categories', function (req, res) {
 	});
 });
 
+/**
+ * Page for specific recipe
+ */
 app.get('/recipe/:recipeId', function (req, res) {
 	fs.readFile('src/public/static/recipe.html', function (err, content) {
 		var html = content.toString();
@@ -227,6 +230,10 @@ app.get('/recipe/:recipeId', function (req, res) {
 	});
 });
 
+/**
+ * Profile page (logged in user)
+ * [needs to redirect logged out user]
+ */
 app.get('/profile', function (req, res) {
 	if (req.session === undefined ||
 			req.session.info === undefined) {
@@ -240,7 +247,7 @@ app.get('/profile', function (req, res) {
 });
 
 /**
- * Profile page
+ * Profile page for specific user
  */
 app.get('/profile/:username', function (req, res) {
 	var username = '';
@@ -269,10 +276,44 @@ app.get('/profile/:username', function (req, res) {
 				 * Serve html
 				 */
 				res.send(result);
-				connection.end();
 			});
 		});
 	}
+});
+
+/**
+ * Returns user's recipes
+ */
+app.get('/recipes-from/:user', function (req, res) {
+
+	if (req.params.user === undefined) {
+		res.send(false);
+		return false;
+	}
+
+	/**
+	 * Setup mysql connection
+	 */
+	var connection = mysql.createConnection({
+		host: 'localhost',
+		user: 'frugal_user',
+		password: mysqlpass,
+		database: 'frugal'
+	});
+
+	connection.connect();
+
+	connection.query("SELECT * FROM recipes WHERE user = ? ORDER BY id DESC", [req.params.user], function (error, results, rows) {
+		if (results === null ||
+				results === undefined ||
+				results.length === 0) {
+			res.send(false);
+			return false;
+		}
+
+		res.send(JSON.stringify(results));
+	});
+
 });
 
 /**

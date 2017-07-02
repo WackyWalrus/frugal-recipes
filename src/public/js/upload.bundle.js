@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 522);
+/******/ 	return __webpack_require__(__webpack_require__.s = 523);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -50311,7 +50311,7 @@ var _Body = __webpack_require__(246);
 
 var _Body2 = _interopRequireDefault(_Body);
 
-var _UploadForm = __webpack_require__(518);
+var _UploadForm = __webpack_require__(519);
 
 var _UploadForm2 = _interopRequireDefault(_UploadForm);
 
@@ -50362,7 +50362,8 @@ user.getInfo(function (info) {
 });
 
 /***/ }),
-/* 518 */
+/* 518 */,
+/* 519 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50675,10 +50676,10 @@ var UploadForm = function (_React$Component2) {
 module.exports = UploadForm;
 
 /***/ }),
-/* 519 */,
 /* 520 */,
 /* 521 */,
-/* 522 */
+/* 522 */,
+/* 523 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(517);

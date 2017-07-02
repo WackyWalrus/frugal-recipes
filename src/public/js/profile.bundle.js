@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 520);
+/******/ 	return __webpack_require__(__webpack_require__.s = 521);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -50497,11 +50497,15 @@ var RecipeList = function (_React$Component) {
 
 		_this.inputChange_handler = _this.inputChange_handler.bind(_this);
 
-		var data = document.getElementById('recipe-data').value;
-		if (data !== '{recipe-data}') {
-			data = JSON.parse(data);
+		if (_this.props.recipes) {
+			var data = _this.props.recipes;
 		} else {
-			data = [];
+			var data = document.getElementById('recipe-data').value;
+			if (data !== '{recipe-data}') {
+				data = JSON.parse(data);
+			} else {
+				data = [];
+			}
 		}
 
 		_this.state = {
@@ -50522,6 +50526,20 @@ var RecipeList = function (_React$Component) {
 	}
 
 	_createClass(RecipeList, [{
+		key: 'componentDidUpdate',
+		value: function componentDidUpdate() {
+			var i = 0,
+			    data = this.props.recipes,
+			    recipes = [];
+			for (i = 0; i < data.length; i += 1) {
+				recipes.push(_react2.default.createElement(_Recipe2.default, { key: data[i].id, data: data[i] }));
+			}
+
+			this.setState({
+				recipes: recipes
+			});
+		}
+	}, {
 		key: 'inputChange_handler',
 		value: function inputChange_handler(e) {
 			this.setState({
@@ -50632,7 +50650,7 @@ var _RecipeList = __webpack_require__(512);
 
 var _RecipeList2 = _interopRequireDefault(_RecipeList);
 
-var _Profile = __webpack_require__(527);
+var _Profile = __webpack_require__(518);
 
 var _Profile2 = _interopRequireDefault(_Profile);
 
@@ -50646,17 +50664,11 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var User = __webpack_require__(250);
-var userData = document.getElementById('user-data').value;
-var user;
+var User = __webpack_require__(250),
+    user = new User();
 
-if (userData === '{user-data}') {
-	user = new User();
-} else {
-	var data = JSON.parse(userData);
-
-	user = new User(data.name);
-}
+var Url = __webpack_require__(228),
+    url = Url.parse(window.location.href);
 
 user.getInfo(function (info) {
 
@@ -50665,10 +50677,27 @@ user.getInfo(function (info) {
 	var Index = function (_React$Component) {
 		_inherits(Index, _React$Component);
 
-		function Index() {
+		function Index(props) {
 			_classCallCheck(this, Index);
 
-			return _possibleConstructorReturn(this, (Index.__proto__ || Object.getPrototypeOf(Index)).apply(this, arguments));
+			var _this = _possibleConstructorReturn(this, (Index.__proto__ || Object.getPrototypeOf(Index)).call(this, props));
+
+			var u = url.pathname.replace('/profile/', '');
+
+			if (u === '') {
+				if (user.name !== undefined) {
+					u = user.name;
+				} else {
+					var _ret;
+
+					return _ret = false, _possibleConstructorReturn(_this, _ret);
+				}
+			}
+
+			_this.state = {
+				user: u
+			};
+			return _this;
 		}
 
 		_createClass(Index, [{
@@ -50681,7 +50710,7 @@ user.getInfo(function (info) {
 					_react2.default.createElement(
 						_Body2.default,
 						null,
-						_react2.default.createElement(_Profile2.default, { user: user })
+						_react2.default.createElement(_Profile2.default, { user: this.state.user })
 					)
 				);
 			}
@@ -50696,22 +50725,7 @@ user.getInfo(function (info) {
 /***/ }),
 /* 516 */,
 /* 517 */,
-/* 518 */,
-/* 519 */,
-/* 520 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(515);
-
-
-/***/ }),
-/* 521 */,
-/* 522 */,
-/* 523 */,
-/* 524 */,
-/* 525 */,
-/* 526 */,
-/* 527 */
+/* 518 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50733,6 +50747,10 @@ var _reactBootstrap = __webpack_require__(56);
 
 var ReactBootstrap = _interopRequireWildcard(_reactBootstrap);
 
+var _RecipeList = __webpack_require__(512);
+
+var _RecipeList2 = _interopRequireDefault(_RecipeList);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -50743,23 +50761,61 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var Grid = ReactBootstrap.Grid,
+    Row = ReactBootstrap.Row,
+    Col = ReactBootstrap.Col;
+
+var axios = __webpack_require__(136);
+
 var Profile = function (_React$Component) {
 	_inherits(Profile, _React$Component);
 
-	function Profile() {
+	function Profile(props) {
 		_classCallCheck(this, Profile);
 
-		return _possibleConstructorReturn(this, (Profile.__proto__ || Object.getPrototypeOf(Profile)).apply(this, arguments));
+		var _this = _possibleConstructorReturn(this, (Profile.__proto__ || Object.getPrototypeOf(Profile)).call(this, props));
+
+		_this.state = {
+			recipes: {}
+		};
+		return _this;
 	}
 
 	_createClass(Profile, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			var _ = this;
+			axios.get('/recipes-from/' + this.props.user).then(function (response) {
+				var data = response.data;
+				_.setState({
+					recipes: data
+				});
+			});
+		}
+	}, {
 		key: 'render',
 		value: function render() {
-			console.log(this.props.user);
 			return _react2.default.createElement(
-				'div',
+				Grid,
 				null,
-				'woo'
+				_react2.default.createElement(
+					Row,
+					null,
+					_react2.default.createElement(
+						Col,
+						{ sm: 3 },
+						_react2.default.createElement(
+							'h2',
+							null,
+							this.props.user
+						)
+					),
+					_react2.default.createElement(
+						Col,
+						{ sm: 9 },
+						_react2.default.createElement(_RecipeList2.default, { recipes: this.state.recipes })
+					)
+				)
 			);
 		}
 	}]);
@@ -50768,6 +50824,15 @@ var Profile = function (_React$Component) {
 }(_react2.default.Component);
 
 module.exports = Profile;
+
+/***/ }),
+/* 519 */,
+/* 520 */,
+/* 521 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(515);
+
 
 /***/ })
 /******/ ]);

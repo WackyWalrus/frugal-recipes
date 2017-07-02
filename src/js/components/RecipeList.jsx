@@ -17,11 +17,15 @@ class RecipeList extends React.Component {
 
 		this.inputChange_handler = this.inputChange_handler.bind(this);
 
-		var data = document.getElementById('recipe-data').value;
-		if (data !== '{recipe-data}') {
-			data = JSON.parse(data);
+		if (this.props.recipes) {
+			var data = this.props.recipes;
 		} else {
-			data = [];
+			var data = document.getElementById('recipe-data').value;
+			if (data !== '{recipe-data}') {
+				data = JSON.parse(data);
+			} else {
+				data = [];
+			}
 		}
 
 		this.state = {
@@ -38,6 +42,19 @@ class RecipeList extends React.Component {
 		for (i = 0; i < data.length; i += 1) {
 			this.state.recipes.push(<Recipe key={data[i].id} data={data[i]} />);
 		}
+	}
+
+	componentDidUpdate() {
+		var i = 0,
+			data = this.props.recipes,
+			recipes = [];
+		for (i = 0; i < data.length; i += 1) {
+			recipes.push(<Recipe key={data[i].id} data={data[i]} />);
+		}
+
+		this.setState({
+			recipes: recipes
+		});
 	}
 
 	inputChange_handler(e) {

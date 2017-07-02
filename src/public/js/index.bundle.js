@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 519);
+/******/ 	return __webpack_require__(__webpack_require__.s = 520);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -50497,11 +50497,15 @@ var RecipeList = function (_React$Component) {
 
 		_this.inputChange_handler = _this.inputChange_handler.bind(_this);
 
-		var data = document.getElementById('recipe-data').value;
-		if (data !== '{recipe-data}') {
-			data = JSON.parse(data);
+		if (_this.props.recipes) {
+			var data = _this.props.recipes;
 		} else {
-			data = [];
+			var data = document.getElementById('recipe-data').value;
+			if (data !== '{recipe-data}') {
+				data = JSON.parse(data);
+			} else {
+				data = [];
+			}
 		}
 
 		_this.state = {
@@ -50522,6 +50526,20 @@ var RecipeList = function (_React$Component) {
 	}
 
 	_createClass(RecipeList, [{
+		key: 'componentDidUpdate',
+		value: function componentDidUpdate() {
+			var i = 0,
+			    data = this.props.recipes,
+			    recipes = [];
+			for (i = 0; i < data.length; i += 1) {
+				recipes.push(_react2.default.createElement(_Recipe2.default, { key: data[i].id, data: data[i] }));
+			}
+
+			this.setState({
+				recipes: recipes
+			});
+		}
+	}, {
 		key: 'inputChange_handler',
 		value: function inputChange_handler(e) {
 			this.setState({
@@ -50719,7 +50737,8 @@ user.getInfo(function (info) {
 /* 516 */,
 /* 517 */,
 /* 518 */,
-/* 519 */
+/* 519 */,
+/* 520 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(514);
