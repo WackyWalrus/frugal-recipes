@@ -1,6 +1,6 @@
 class Site {
 	constructor() {
-		this.name = 'Frugal Recipes';
+		this.name = 'Reddit Recipes';
 	}
 }
 

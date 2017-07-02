@@ -7554,7 +7554,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var Site = function Site() {
 	_classCallCheck(this, Site);
 
-	this.name = 'Frugal Recipes';
+	this.name = 'Reddit Recipes';
 };
 
 module.exports = Site;
