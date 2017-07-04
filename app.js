@@ -1,5 +1,6 @@
 var mysqlpass = (process.argv[3] === undefined) ? false : process.argv[3];
 
+const compression = require('compression');
 const express = require('express');
 const app = express();
 const fs = require('fs');
@@ -14,6 +15,7 @@ const glob = require('glob');
 
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+app.use(compression());
 
 app.use(session({
   cookieName: 'session',
