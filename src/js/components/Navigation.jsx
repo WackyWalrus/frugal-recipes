@@ -15,7 +15,7 @@ const Navbar = ReactBootstrap.Navbar,
 const site = new Site();
 
 var rand = randomString({ length: 20 }),
-	url = "http://www.reddit.com/api/v1/authorize?client_id=va8Z5cSauGnlGQ&response_type=code&state=" + rand + "&redirect_uri=http://45.79.78.240/get-token/&duration=permanent&scope=identity";
+	url = "http://www.reddit.com/api/v1/authorize?client_id=va8Z5cSauGnlGQ&response_type=code&state=" + rand + "&redirect_uri=http://redditrecipes.com/get-token/&duration=permanent&scope=identity";
 
 function handleSelect(selectedKey) {
 	if (selectedKey === 'loginToReddit') {

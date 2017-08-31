@@ -529,7 +529,7 @@ app.get('/get-token/', function (req, res) {
 			form: {
 				'grant_type': 'authorization_code',
 				'code': getData.code,
-				'redirect_uri': 'http://redditrecipes.com/get-token'
+				'redirect_uri': 'http://redditrecipes.com/get-token/'
 			},
 			headers: {
 				'Authorization': 'Basic ' + base64.encode('va8Z5cSauGnlGQ:Q2Rrw0FlP4eWjikWN9-JosEjguI'),
