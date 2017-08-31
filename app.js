@@ -542,7 +542,7 @@ app.get('/get-token/', function (req, res) {
 				request.get({
 					url: "https://oauth.reddit.com/api/v1/me",
 					headers: {
-						'User-Agent': 'webapp:redditrecipes.com:0.5 (by /u/mcfailure)',
+						'User-Agent': 'webapp:45.79.78.240:0.5 (by /u/mcfailure)',
 						'Authorization': 'bearer ' + body.access_token
 					}
 				}, function optionalCallback(err, httpResponse, body) {
