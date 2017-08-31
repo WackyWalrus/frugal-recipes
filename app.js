@@ -529,7 +529,7 @@ app.get('/get-token/', function (req, res) {
 			form: {
 				'grant_type': 'authorization_code',
 				'code': getData.code,
-				'redirect_uri': 'http://45.79.78.240/get-token/'
+				'redirect_uri': 'http://redditrecipes.com/get-token/'
 			},
 			headers: {
 				'Authorization': 'Basic ' + base64.encode('va8Z5cSauGnlGQ:Q2Rrw0FlP4eWjikWN9-JosEjguI'),
@@ -542,7 +542,7 @@ app.get('/get-token/', function (req, res) {
 				request.get({
 					url: "https://oauth.reddit.com/api/v1/me",
 					headers: {
-						'User-Agent': 'webapp:45.79.78.240:0.5 (by /u/mcfailure)',
+						'User-Agent': 'webapp:redditrecipes.com:0.5 (by /u/mcfailure)',
 						'Authorization': 'bearer ' + body.access_token
 					}
 				}, function optionalCallback(err, httpResponse, body) {
